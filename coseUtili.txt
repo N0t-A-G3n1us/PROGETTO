@@ -1,0 +1,9 @@
+---File dove mettiamo tutte le cose utili che troviamo/impariamo su GitKraken
+
+
+-------- GIUSEPPPE-----------------
+
+
+Sito con guida su git kraken quasi decente (ragionevole):
+
+https://www.youtube.com/watch?v=jPUew3gPoXw
