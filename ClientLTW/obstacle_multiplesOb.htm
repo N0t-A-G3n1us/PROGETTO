@@ -31,7 +31,7 @@ var myObstacles=[];	//array di component ostacoli
 function startGame() {
     
     myGamePiece = new component(30, 30, "red", 10, 120);
-	//myObstacle = new component(10,200,"black",300,120);
+	myObstacle = new component(10,200,"black",300,120);
 	myGameArea.start();
 }
 var myGameArea = {
@@ -108,26 +108,35 @@ function component(width,height,color,x,y){	//costruttore
     
 }
 
-    
-	
-	
 function updateGameArea() {	//va chiamata periodicamente
     
     var x,y;
+    //var stoCa = false;
     for (i=0; i< myObstacles.length; i++) {
 		//controllo : crash con ostacolo myObstacle[i] ?
         if (myGamePiece.crashWith(myObstacles[i])) {
             //AVVENUTO CRASH CON OSTACOLO
+            //stoCa = true
+            window.alert("GAME OVER");
             myGameArea.stop();
-             window.alert("GAME OVER");
+            //break;
+            //window.alert("GAME OVER");
 			//bisogna far in modo di farlo restartare senza che si muova all avvio
 			myGameArea.clear();
-			myGamePiece.speedX = 0;
-			myGamePiece.speedY = 0;
+			//myGamePiece.speedX = 0;
+			//myGamePiece.speedY = 0;
+            myGamePiece.newPos();
+            myObstacles = [];
 			startGame();
-			
         }
+        /*
+        myGameArea.clear();
+        myObstacle.update();
+        myGamePiece.newPos();
+        myGamePiece.update();
+        */
     }
+    
     
     myGameArea.clear();
     myGameArea.frameNo +=1;
@@ -169,7 +178,7 @@ function updateGameArea() {	//va chiamata periodicamente
 	myGamePiece.newPos();
     myGamePiece.update();
        
-    }
+}
 
 
 
