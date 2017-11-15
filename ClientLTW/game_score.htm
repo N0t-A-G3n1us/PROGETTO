@@ -1,18 +1,21 @@
-<!-- 
-How about adding multiple obstacles?
+<!--
 
-For that we need a property for counting frames, 
-and a method for execute something at a given frame rate.
+There are many ways to keep the score in a game, we will show you how to write a score onto the canvas.
 
-The everyinterval function returns true if the current framenumber
-corresponds with the given interval.
-To define multiple obstacles, first declare the obstacle variable
-as an array.
-Second, we need to make some changes in the updateGameArea function.
+1) First make a score component
+
+2) The syntax for writing text on a canvas element is different from drawing a rectangle. Therefore we must call the component constructor using an additional argument, telling the constructor that this component is of type "text".
+In the component constructor we test if the component is of type "text", and use the fillText method instead of the fillRect method
+
+3) At last we add some code in the updateGameArea function that writes the score onto the canvas. We use the frameNo property to count the score
+
 -->
 
+<!DOCTYPE html>
 <html>
 	<head>
+		<link rel = "prev" type="text/html" href="file:///Users/gianlucacapozzi/Desktop/game_form.htm">
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
             canvas {
@@ -20,14 +23,21 @@ Second, we need to make some changes in the updateGameArea function.
                 background-color: #f1f1f1;
             }
         </style>
-        <script>
+        <script type = "text/javascript" language = "javascript">
+
+        //var doc = document.querySelector('link[rel="import"]').import;
+
+        //var nome = doc.myGameForm.NomeUtente.value;
 
         var myGamePiece;
         var myObstacles=[]; //array di component ostacoli
+        var myScore;
 
         function startGame() {
+        	//window.alert("NomeUtente: " + nome);
             myGamePiece = new component(30, 30, "red", 10, 120);
             myObstacle = new component(10,200,"black",300,120);
+            myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             myGameArea.start();
@@ -68,7 +78,8 @@ Second, we need to make some changes in the updateGameArea function.
             return false;   
         }
 
-        function component(width,height,color,x,y){ //costruttore
+        function component(width,height,color,x,y, type){ //costruttore
+            this.type = type;
             this.width = width;
             this.height = height;
             this.speedX = 0;    //sono usati come indicatori di velocita
@@ -78,8 +89,15 @@ Second, we need to make some changes in the updateGameArea function.
             
             this.update = function() {
                 ctx = myGameArea.context;
-                ctx.fillStyle = color;
-                ctx.fillRect(this.x, this.y, this.width, this.height);
+                if(this.type == "text"){
+                    ctx.font = this.width + " " + this.height;
+                    ctx.fillStyle = color;
+                    ctx.fillText(this.text, this.x, this.y);
+                }
+                else{
+                    ctx.fillStyle = color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
             }
             
             this.newPos = function() {  //cambia la posizione del component
@@ -106,6 +124,25 @@ Second, we need to make some changes in the updateGameArea function.
                 }
                 return crash;
             }
+
+            this.crashWithBorder = function(h){
+            	var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                var othertop = h;
+                var otherbottom = 0;
+                var crash = true;   // presuppongo collisione
+                if ((mybottom < othertop) ||    //verifico se non c è stata
+                       (mytop > otherbottom) 
+                       ) {
+                   crash = false;
+                }
+                console.log(h)
+
+                return crash;
+
+            }
             
         }
 
@@ -117,6 +154,7 @@ Second, we need to make some changes in the updateGameArea function.
                 if (myGamePiece.crashWith(myObstacles[i])) {
                     //AVVENUTO CRASH CON OSTACOLO
                     window.alert("GAME OVER");
+                    window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
                     myGameArea.stop();
                     //bisogna far in modo di farlo restartare senza che si muova all avvio
                     /*
@@ -128,7 +166,22 @@ Second, we need to make some changes in the updateGameArea function.
                     window.location.reload();
                 }
             }
-            
+
+            if(myGamePiece.crashWithBorder(myGameArea.canvas.height)){
+            	//AVVENUTO CRASH CON OSTACOLO
+                    window.alert("GAME OVER Bordo");
+                    window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
+                    myGameArea.stop();
+                    //bisogna far in modo di farlo restartare senza che si muova all avvio
+                    /*
+                    myGameArea.clear();
+                    myGamePiece.newPos();
+                    myObstacles = [];
+                    startGame();
+                    */
+                    window.location.reload();
+            }
+
             myGameArea.clear();
             myGameArea.frameNo +=1;
             
@@ -151,20 +204,22 @@ Second, we need to make some changes in the updateGameArea function.
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             //movimenti: W,A,S,D
-             if (myGameArea.keys && myGameArea.keys[65])
-                    {myGamePiece.speedX = -0.5; }
-                if (myGameArea.keys && myGameArea.keys[68]) 
-                    {myGamePiece.speedX = 0.5; }
-                if (myGameArea.keys && myGameArea.keys[87]) 
-                    {myGamePiece.speedY = -0.5; }
-                if (myGameArea.keys && myGameArea.keys[83]) 
-                    {myGamePiece.speedY = 0.5; }
+            if (myGameArea.keys && myGameArea.keys[65])
+                {myGamePiece.speedX = -0.5; }
+            if (myGameArea.keys && myGameArea.keys[68]) 
+                {myGamePiece.speedX = 0.5; }
+            if (myGameArea.keys && myGameArea.keys[87]) 
+                {myGamePiece.speedY = -1.5; }
+            if (myGameArea.keys && myGameArea.keys[83]) 
+                {myGamePiece.speedY = 1.5; }
             
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
                 myObstacles[i].update();
             }
             
+            myScore.text = "Score: " + myGameArea.frameNo;
+            myScore.update();
             myGamePiece.newPos();
             myGamePiece.update();
                
@@ -172,6 +227,5 @@ Second, we need to make some changes in the updateGameArea function.
         //per fermare il component (a che serve???)
         </script>
     </head>
-    <body onload="startGame()">
-    </body>
+    <body onload = "startGame();">
 </html>

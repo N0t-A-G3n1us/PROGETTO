@@ -1,0 +1,25 @@
+<DOCTYPE hmtl>
+<html>
+	<head>
+		<script type = "text/javascript" language="javascript">
+			function okForm(){
+				if(document.myGameForm.NomeUtente.value==""){
+					alert("Inserire Nome Utente");
+					return false;
+				}
+				return true;
+			}
+		</script>
+	</head>
+	<body>
+		<form action = "game_score.htm" method="post" name="myGameForm" onsubmit="return okForm();">
+    	<table>
+    		<tr>
+    		<td align="right"> Nome Utente:
+    		<td><input type = "text" name = "NomeUtente" size="40" maxlength="40">
+    		<tr>
+    		<td align="right">
+    		<td><input id="Start" type="submit" value="Start">
+    	</form>
+    </body>
+</html>
