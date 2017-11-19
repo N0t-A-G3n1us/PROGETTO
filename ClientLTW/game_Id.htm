@@ -235,7 +235,11 @@ In the component constructor we test if the component is of type "text", and use
                 {myGamePiece.speedY = 1.5; }
             
             for (i = 0; i < myObstacles.length; i += 1) {
-                myObstacles[i].x += -1;
+				if(myGameArea.frameNo<500)
+					myObstacles[i].x += -1;	//velocita iniziale
+                else
+					myObstacles[i].x += -(myGameArea.frameNo/500);
+
                 myObstacles[i].newPos();
                 myObstacles[i].update();
             }
