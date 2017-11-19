@@ -1,0 +1,29 @@
+===================	Giuseppe 	=============================
+===================			=============================
+
+
+Per installare rabbit-mq (che è un casino):
+https://tecadmin.net/install-rabbitmq-server-on-ubuntu/
+
+-> arrivato a minuto 28, mi crasha Rabbitmq
+
+
+Flickr, cartella github con test di ogni metodo :
+https://github.com/flickr/flickr-sdk/tree/master/test
+
+
+-----------------PROGETTO 1:
+
+search list doc:
+https://developers.google.com/youtube/v3/docs/search/list#location
+
+
+-----------------PROGETTO 2:
+http://aqicn.org/json-api/doc/
+
+-----------------PROGETTO 3:
+https://spring.io/guides/gs/accessing-facebook/
+
+https://developers.facebook.com/docs/graph-api/reference/user/television/
+
+
