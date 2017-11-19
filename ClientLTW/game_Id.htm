@@ -14,7 +14,7 @@ In the component constructor we test if the component is of type "text", and use
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel = "prev" type="text/html" href="file:///Users/gianlucacapozzi/Desktop/game_form.htm">
+		<link rel = "prev" type="text/html" >
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         
@@ -40,12 +40,16 @@ In the component constructor we test if the component is of type "text", and use
 
         function startGame() {
         	//window.alert("NomeUtente: " + nome);
-            myGamePiece = new component(30, 30, "red", 10, 120);
-            myObstacle = new component(10,200,"black",300,120);
-            myId=new component("10px", "Consolas", "blue", 250, 100, "text");
-            myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
+            myGamePiece = new component(30, 30, "carAbove.gif", 10, 120, "image");
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
+            
+            myObstacle = new component(10,200,"black",300,120);
+            
+            myId=new component("10px", "Consolas", "blue", 250, 100, "text");
+            
+            myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
+           
             myGameArea.start();
         }
 
@@ -84,8 +88,13 @@ In the component constructor we test if the component is of type "text", and use
             return false;   
         }
 
+
         function component(width,height,color,x,y, type){ //costruttore
             this.type = type;
+            if (type == "image") {
+				this.image = new Image();
+				this.image.src = color;
+			}
             this.width = width;
             this.height = height;
             this.speedX = 0;    //sono usati come indicatori di velocita
@@ -95,7 +104,13 @@ In the component constructor we test if the component is of type "text", and use
             
             this.update = function() {
                 ctx = myGameArea.context;
-                if(this.type == "text"){
+                if (type == "image") {
+					ctx.drawImage(this.image,
+					this.x,
+					this.y,
+					this.width, this.height);
+                }
+                else if(this.type == "text"){
                     ctx.font = this.width + " " + this.height;
                     ctx.fillStyle = color;
                     ctx.fillText(this.text, this.x, this.y);
@@ -221,6 +236,7 @@ In the component constructor we test if the component is of type "text", and use
             
             for (i = 0; i < myObstacles.length; i += 1) {
                 myObstacles[i].x += -1;
+                myObstacles[i].newPos();
                 myObstacles[i].update();
             }
             myScore.text = "Score: " + myGameArea.frameNo;
