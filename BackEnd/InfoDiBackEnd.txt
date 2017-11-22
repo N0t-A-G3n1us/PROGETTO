@@ -26,6 +26,11 @@ https://spring.io/guides/gs/accessing-facebook/
 
 https://developers.facebook.com/docs/graph-api/reference/user/television/
 
+
+============================================================================================================
+=================================      FORALL       ========================================================
+============================================================================================================
+
 https://en.wikipedia.org/w/api.php?action=query&titles=Stranger_Things&prop=revisions&rvprop=content&format=jsonfm
 
 https://www.youtube.com/watch?v=ZiYdOwOrGyc&index=11&list=PLRqwX-V7Uu6a-SQiI4RtIwuOrLJGnel0r
