@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Checkers - Spectating</title>
+    <link rel="stylesheet" type="text/css" href="reset.css">
+    <link rel="stylesheet" type="text/css" href="checkers.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  </head>
+  <body>
+
+    <game>
+      <game-list></game-list>
+      <game-info>
+         <game-id></game-id>
+         <turn></turn>
+         <winner></winner>
+      </game-info>
+      <board></board>
+    </game>
+
+    <script src="/jquery-1.11.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+      var socket = io();
+
+      function getElement(name) {
+         var $elems = $(name)
+         if ($elems.length)
+            return $elems[0];
+         var $elem = $('<' + name + '>');
+         $(body).append($elem)
+         return $elem;
+      }
+
+      function getSpace(x, y) {
+         var boardElem = getElement('board');
+         var rowElem = boardElem.getElementsByTagName('row')[y];
+         var cellElem = rowElem.getElementsByTagName('space')[x];
+         return cellElem;
+      }
+
+      function resizeGame() {
+         var $window = $(window);
+         var tableDim = Math.min($window.width(), $window.height());
+         tableDim -= tableDim % 8 + (5*2);
+         var cellDim = (tableDim - (8*2)) / 8;
+         var pieceDim = (cellDim * .8);
+         pieceDim -= (pieceDim % 2);
+         var $board = $(getElement('board'));
+         $board.css('width', tableDim);
+         $board.css('height', tableDim);
+         $board.find('space').each(function() {
+            $(this).css('width', cellDim);
+            $(this).css('height', cellDim);
+         });
+         $board.find('piece').each(function() {
+            $(this).css('width', pieceDim);
+            $(this).css('height', pieceDim);
+            $(this).css('border-radius', pieceDim / 2);
+            $(this).css('background-size', pieceDim * 0.75);
+         });
+         var $gameInfo = $(getElement('game-info'));
+         var $gameList = $(getElement('game-list'));
+         if ($window.width() > $window.height()) {
+            $gameInfo.css('left', $board.outerWidth());
+            $gameInfo.css('top', 0);
+            $gameList.css('left', $board.outerWidth());
+            $gameList.css('top', $gameInfo.position().top + ($gameInfo.outerHeight() * 1.25));
+         } else {
+            $gameInfo.css('left', 0);
+            $gameInfo.css('top', $board.outerHeight());
+            $gameList.css('left', $gameInfo.outerWidth());
+            $gameList.css('top', $board.outerHeight());
+         }
+      }
+      $(window).resize(resizeGame);
+
+      socket.on('BOARD', function(data) {
+
+         var rows = data.split('|');
+         var $board = $(getElement('board'));
+         $board.html(''); // Clear existing board contents
+
+         for (var i=0; i<rows.length; i++) {
+
+            var row = rows[i];
+            var pieces = row.split('');
+            var $row = $('<row>');
+            $board.append($row);
+
+            for (var j=0; j<pieces.length; j++) {
+
+               var piece = pieces[j];
+               var $space = $('<space>');
+               $row.append($space);
+
+               if ((j + (i % 2)) % 2 != 0) {
+                  $space.addClass('usable');
+               }
+
+               var $piece = $('<piece>');
+
+               if (piece.toLowerCase() == 'r') {
+                  $piece.addClass('red');
+               } else if (piece.toLowerCase() == 'b') {
+                  $piece.addClass('black');
+               } else {
+                  continue;
+               }
+               $space.append($piece);
+               if (piece >= 'A' && piece <= 'Z')
+                  $piece.addClass('king');
+            }
+         }
+         $(getElement('game')).css('visibility', 'visible');
+         resizeGame();
+      });
+
+      socket.on('MOVED', function(data) {
+         var coords = data.split(' ');
+         var srcx = coords[0], srcy = coords[1], dstx = coords[2], dsty = coords[3];
+         var srcCellElem = getSpace(srcx, srcy), dstCellElem = getSpace(dstx, dsty);
+         var pieceElem = srcCellElem.childNodes[0];
+         srcCellElem.removeChild(pieceElem);
+         dstCellElem.appendChild(pieceElem);
+      });
+
+      socket.on('CAPTURED', function(data) {
+         var coords = data.split(' ');
+         var x = coords[0], y = coords[1];
+         var cellElem = getSpace(x, y);
+         cellElem.removeChild(cellElem.childNodes[0]);
+      });
+
+      socket.on('KING', function(data) {
+         var coords = data.split(' ');
+         var x = coords[0], y = coords[1];
+         var pieceElem = getSpace(x, y).childNodes[0];
+         $(pieceElem).addClass('king');
+      });
+
+      socket.on('TURN', function(data) {
+         var msg;
+         if (data == 'waiting') {
+            msg = 'Waiting for players';
+         } else {
+            msg = data.charAt(0).toUpperCase() + data.slice(1) + "'s turn";
+         }
+         getElement('turn').innerHTML = msg;
+         $('board').find('piece').each(function() {
+            if ($(this).hasClass(data)) {
+               $(this).addClass('is_turn');
+            } else {
+               $(this).removeClass('is_turn');
+            }
+         });
+      });
+
+      socket.on('WINNER', function(data) {
+         getElement('winner').innerHTML = 'Winner: ' + data;
+      });
+
+      socket.on('GAME_ID', function(data) {
+         getElement('game-id').innerHTML = 'Game ' + data;
+      });
+
+      function spectate(gameId) {
+         socket.emit('commands', 'SPECTATE ' + gameId);
+      }
+
+      function spectateHandler(gameId) {
+         return function () { spectate(gameId); }
+      }
+
+      socket.on('LIST SPECTATE', function(data) {
+         var $gameList = $(getElement('game-list'));
+         if (data) {
+            $gameList.html('<div>Games</div>');
+            var gameIds = data.split(' ');
+            for (var i=0; i<gameIds.length; i++) {
+               var gameId = gameIds[i];
+               var $radio = $('<input>', {
+                  'id': gameId, 'type': 'radio', 'name': 'game',
+                  on: { change: spectateHandler(gameId) }
+               });
+               var $label = $('<label for="' + gameId + '">' + gameId + '</label>');
+               $gameList.append($radio);
+               $gameList.append($label);
+            }
+            $refreshLink = $('<button>Refresh</button>').click(gameList);
+            $gameList.append($refreshLink);
+         } else {
+            $gameList.html('<div>No Games</div>');
+         }
+         $(getElement('game')).css('visibility', 'visible');
+      });
+
+      function gameList() {
+         console.log('sending game list command');
+         socket.emit('commands', 'LIST SPECTATE');
+      }
+
+      $(document).ready(gameList);
+    </script>
+  </body>
+</html>
