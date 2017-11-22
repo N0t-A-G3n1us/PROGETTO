@@ -21,7 +21,7 @@ In the component constructor we test if the component is of type "text", and use
         <style>
             canvas {
                 border:1px solid #d3d3d3;
-                background-color: #f1f1f1;
+                background-color: grey;
                
             }
         </style>
@@ -34,19 +34,19 @@ In the component constructor we test if the component is of type "text", and use
         var myGamePiece;
         var myObstacles=[]; //array di component ostacoli
         var myScore;
-        var id=window.location.search.substr(1)
+        var id= window.location.search.substr(1).toString().split("=")[1];
         var myId;
 
 
         function startGame() {
         	//window.alert("NomeUtente: " + nome);
-            myGamePiece = new component(30, 30, "carAbove.gif", 10, 120, "image");
+            myGamePiece = new component(60, 30, "carAbove.png", 10, 120, "image");
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             
             myObstacle = new component(10,200,"black",300,120);
             
-            myId=new component("10px", "Consolas", "blue", 250, 100, "text");
+            myId=new component("10px", "Id", "red", 250, 100, "text");
             
             myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
            
