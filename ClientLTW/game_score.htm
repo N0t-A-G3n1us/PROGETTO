@@ -33,12 +33,14 @@ In the component constructor we test if the component is of type "text", and use
         var myGamePiece;
         var myObstacles=[]; //array di component ostacoli
         var myScore;
+        var myBackground;
 
         function startGame() {
         	//window.alert("NomeUtente: " + nome);
             myGamePiece = new component(30, 30, "red", 10, 120);
             myObstacle = new component(10,200,"black",300,120);
             myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
+            myBackground= new component(656, 270, "street.jpeg", 0, 0, "image");
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             myGameArea.start();
@@ -215,18 +217,24 @@ In the component constructor we test if the component is of type "text", and use
                 {myGamePiece.speedY = 1.5; }
             
             for (i = 0; i < myObstacles.length; i += 1) {
-                myObstacles[i].x += -1;
+                myObstacles[i].x += -2;
+                myObstacles[i].speedX += 40;
                 myObstacles[i].update();
             }
+           
             myScore.text = "Score: " + myGameArea.frameNo;
             myScore.update();
+           
             myGamePiece.newPos();
             myGamePiece.update();
-            
+           
+            myBackground.newPos(); 
+			myBackground.update();
                
         }
         //per fermare il component (a che serve???)
         </script>
     </head>
     <body onload = "startGame();">
+		
 </html>

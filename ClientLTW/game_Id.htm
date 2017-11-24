@@ -36,6 +36,7 @@ In the component constructor we test if the component is of type "text", and use
         var myScore;
         var id= window.location.search.substr(1).toString().split("=")[1];
         var myId;
+        var myBackground;
 
 
         function startGame() {
@@ -49,6 +50,9 @@ In the component constructor we test if the component is of type "text", and use
             myId=new component("10px", "Id", "red", 250, 100, "text");
             
             myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
+           
+			myBackground = new component(656, 270, "street.jpg", 0, 0, "image");
+
            
             myGameArea.start();
         }
@@ -91,7 +95,7 @@ In the component constructor we test if the component is of type "text", and use
 
         function component(width,height,color,x,y, type){ //costruttore
             this.type = type;
-            if (type == "image") {
+            if (type == "image"  || type == "background") {
 				this.image = new Image();
 				this.image.src = color;
 			}
@@ -104,17 +108,20 @@ In the component constructor we test if the component is of type "text", and use
             
             this.update = function() {
                 ctx = myGameArea.context;
-                if (type == "image") {
+                if (type == "image" || type == "background" ) {
 					ctx.drawImage(this.image,
-					this.x,
-					this.y,
-					this.width, this.height);
+						this.x,this.y,this.width,this.height);
+					if(this.type == "background"){
+						ctx.drawImage(this.image,
+							this.x + this.width,this.y,this.width,this.height);	
+					}
                 }
                 else if(this.type == "text"){
                     ctx.font = this.width + " " + this.height;
                     ctx.fillStyle = color;
                     ctx.fillText(this.text, this.x, this.y);
                 }
+               
                 else{
                     ctx.fillStyle = color;
                     ctx.fillRect(this.x, this.y, this.width, this.height);
@@ -125,6 +132,11 @@ In the component constructor we test if the component is of type "text", and use
                 //lavorando su speedX e speedY 
                 this.x += this.speedX;
                 this.y += this.speedY;
+                if( this.type == "background") {
+					if(this.x == -(this.width)){
+							this.x = 0;
+						}
+					}
             }
             
             this.crashWith = function(otherobj) {
@@ -170,6 +182,8 @@ In the component constructor we test if the component is of type "text", and use
         function updateGameArea() { //va chiamata periodicamente
             
             var x, height, gap, minHeight, maxHeight, minGap, maxGap;
+            
+			
             for (i=0; i< myObstacles.length; i++) {
                 //controllo : crash con ostacolo myObstacle[i] ?
                 if (myGamePiece.crashWith(myObstacles[i])) {
@@ -202,7 +216,9 @@ In the component constructor we test if the component is of type "text", and use
                     */
                     window.location.reload();
             }
-
+			
+			
+			
             myGameArea.clear();
             myGameArea.frameNo +=1;
             
@@ -234,22 +250,35 @@ In the component constructor we test if the component is of type "text", and use
             if (myGameArea.keys && myGameArea.keys[83]) 
                 {myGamePiece.speedY = 1.5; }
             
+            myBackground.speedX = -1; 
+            myBackground.newPos(); 
+			myBackground.update();
+			
+			
+			
             for (i = 0; i < myObstacles.length; i += 1) {
 				if(myGameArea.frameNo<500)
 					myObstacles[i].x += -1;	//velocita iniziale
+					 
                 else
 					myObstacles[i].x += -(myGameArea.frameNo/500);
 
                 myObstacles[i].newPos();
                 myObstacles[i].update();
             }
+            
+            
+            
+            
             myScore.text = "Score: " + myGameArea.frameNo;
+            myScore.update();
+            
             myId.text=id;
             myId.update();
-            myScore.update();
+                                    
             myGamePiece.newPos();
             myGamePiece.update();
-            
+           
                
         }
         //per fermare il component (a che serve???)
