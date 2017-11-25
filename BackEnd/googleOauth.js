@@ -6,12 +6,12 @@ var app = express();
 var a_t = '';
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/', function(req, res){
+app.get('/login', function(req, res){
 	console.log("ciao");
 	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3000&response_type=code&client_id=247107126228-gvlrlvp265blbmcdb92sgglf4iom6gk4.apps.googleusercontent.com");
 });
 
-app.get('/login', function(req, res){
+app.get('/', function(req, res){
 	console.log("code taken");
 	var formData = {
 		code: req.query.code,
