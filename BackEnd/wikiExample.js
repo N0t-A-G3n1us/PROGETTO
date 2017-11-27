@@ -18,10 +18,13 @@ var url=url1+citta+url2
 
 
 	
-	function callback(error,res,body){
-		var info=JSON.parse(body)
-		console.log(info.query.pages);
-		}
+function callback(error,res,body){
+	var info=JSON.parse(body);
+	let page = info.query.pages;
+	let pageId = Object.keys(info.query.pages)[0];
+	console.log(page[pageId]);
+	let content = page[pageId].revisions[0]['*'];
+}
 
 
 	
