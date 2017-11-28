@@ -8,12 +8,14 @@ var bodyParser=require('body-parser');
 
 app.use(bodyParser.urlencoded({extended:true}));
 
+//var url1="https://en.wikipedia.org/w/api.php?action=query&titles=";
 
-var url1 = 'https://en.wikipedia.org/w/api.php?format=json&action=query';
-var url2 = '&prop=extracts&exintro=&explaintext=&titles=';
-var citta = 'Milan';
+var citta="Milan";
+//var url2="&prop=revisions&rvprop=content&format=json";
 
-var url = url1 + url2 + citta;
+//var url=url1+citta+url2
+var stackUrl="https://en.wikipedia.org/w/api.php?format=json&"+
++"action=query&prop=extracts&exintro=&explaintext=&titles="+citta;
 
 
 
@@ -23,13 +25,13 @@ function callback(error,res,body){
 	var info=JSON.parse(body);
 	let page = info.query.pages;
 	let pageId = Object.keys(info.query.pages)[0];
-	console.log(page[pageId]);
-	let content = page[pageId].extract;
+	let content = pageId.extract;
+	console.log(content);
 }
 
 
 	
-request.get(url,callback)
+request.get(stackUrl,callback)
 
 
 var server = app.listen(3000,function() {
