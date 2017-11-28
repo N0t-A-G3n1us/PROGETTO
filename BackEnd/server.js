@@ -11,9 +11,10 @@ console.log("dovrei essere un server");
 
 app.post("/getInfo", function (req,res) {
 	
+  var c=req.body.citta;
   //	res.send("SEI IN GETINFO");
-	console.log("ANANNANA")
-  res.send('You sent me ' + req.body.citta);
+	console.log("Server received " +c)
+  res.send('You sent me ' + c);
 		})
 	
 
