@@ -13,15 +13,19 @@
 			}
 		</script>
 	</head>
-	<body>
+	<body style="background-image:url('background.jpg')"  >
+
+		<h1 style="font-family: comic sans;font-size:400%;margin-left:800px; color:white;text-shadow: 3px 2px DodgerBlue "> Car Game </h1>
+
 		<form action="game_Id.htm?name=" method="get" name="myGameForm" onsubmit=" return okForm()">
-    	<table>
+    	<table id="my_table" style="margin-top:600px;margin-left:730px;border:2px solid DodgerBlue ">
     		<tr>
-    		<td align="right"> Nome Utente: 
-    		<td><input type = "text" name = "NomeUtente"  size="40" maxlength="40">
+    		<td align="right" style="color:white;font-family: verdana; font-size: 200%;"> Nome Utente: 
+    		<td><input type = "text" name = "NomeUtente"  size="30" maxlength="30" >
     		<tr>
     		<td align="right">
-    		<td><input id="Start" type="submit" value="Start">
+    		<td><input id="Start" type="submit" value="Start" 
+    			style="background-color:Tomato;font-size:200%;border:2px solid DodgerBlue">
     	</form>
     </body>
 </html>
