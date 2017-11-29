@@ -22,8 +22,8 @@ In the component constructor we test if the component is of type "text", and use
             canvas {
                 border:1px solid #d3d3d3;
                 background-color: grey;
-                margin-left: 600px;
-                margin-top: 200px;
+                margin-left: 10%;
+                margin-top: 10%;
                 border-color: black;
             }
         </style>
@@ -38,6 +38,7 @@ In the component constructor we test if the component is of type "text", and use
         var myScore;
         var id= window.location.search.substr(1).toString().split("=")[1];
         var myId;
+        var myBackground;
 
 
         function startGame() {
@@ -46,12 +47,12 @@ In the component constructor we test if the component is of type "text", and use
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             
-            myObstacle = new component(10,200,"black",300,120);
-            
             myId=new component("10px", "Id", "red", 250, 100, "text");
             
             myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
            
+            myBackground= new component(480,270,"street.jpg",0,0,"image"); 
+
             myGameArea.start();
         }
 
@@ -206,6 +207,10 @@ In the component constructor we test if the component is of type "text", and use
             }
 
             myGameArea.clear();
+
+            myBackground.newPos();
+            myBackground.update();
+
             myGameArea.frameNo +=1;
             
             if (myGameArea.frameNo == 1 || everyInterval(150)) {
@@ -217,10 +222,10 @@ In the component constructor we test if the component is of type "text", and use
                 minGap = 50;
                 maxGap = 200;
                 gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-                myObstacles.push(new component(10, height, "green", x, 0));
-                myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+                myObstacles.push(new component(60, 30, "policeCar.png", x, height,"image"));
+                myObstacles.push(new component(60, 30 , "policeCar.png", x, height+ gap,"image"));
                 //y = myGameArea.canvas.height - 200
-                myObstacles.push(new component(10, 200, "green", x, y));
+                
             }
             
             
@@ -245,10 +250,15 @@ In the component constructor we test if the component is of type "text", and use
                 myObstacles[i].newPos();
                 myObstacles[i].update();
             }
+
+
             myScore.text = "Score: " + myGameArea.frameNo;
+            
             myId.text=id;
             myId.update();
+            
             myScore.update();
+            
             myGamePiece.newPos();
             myGamePiece.update();
             
