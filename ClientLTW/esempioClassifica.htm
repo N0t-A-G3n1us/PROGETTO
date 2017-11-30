@@ -40,19 +40,34 @@
 				return false;
 			}
 			function ordina(u){
-				for(i = 0; i < u.length; i++){
-					for(j = i+1; j < u.length-1; i++){
-						if(u[i].matricola < u[j].matricola){
-							swap(i, j, u);
+				//var u = JSON.parse(localStorage.utenti);
+				var l = u.length;
+				for(i = 0; i < l-1; i++){
+					for(j = l-1; j > i; j--){
+						if(u[j-1].m < u[j].m){
+							aux = u[j-1];
+							u[j-1] = u[j];
+							u[j] = aux;
 						}
 					}
 				}
 			}
-			function swap(i, j, u){
-				var tmp = u[i];
-				u[i] = u[j];
-				u[j] = tmp;
-			}
+			/*
+			function ordina(u){ 
+        		for(i = 0; i < u.length; i++){ 
+          			for(j = i+1; j < u.length-1; j++){ 
+            			if(u[i].m > u[j].m){ 
+              				swap(i, j, u); 
+            			} 
+          			} 
+        		} 
+      		} 
+      		function swap(i, j, u){ 
+        		var tmp = u[i]; 
+        		u[i] = u[j]; 
+        		u[j] = tmp; 
+      		}
+      		*/
 			function inserisciUtente(){
 				if(document.registrazione.cognome.value == ""){
 					alert("Inserire Cognome");
