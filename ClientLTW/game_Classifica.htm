@@ -32,7 +32,7 @@ In the component constructor we test if the component is of type "text", and use
         var myGamePiece;
         var myObstacles=[]; //array di component ostacoli
         var myScore;
-        var id= window.location.search.substr(1).toString().split("=")[1];
+        var id = window.location.search.substr(1).toString().split("=")[1];
         var myId;
         var myBackground;
 
@@ -56,20 +56,16 @@ In the component constructor we test if the component is of type "text", and use
         var myRankingArea ={
             canvas: document.createElement("canvas"),
             start: function(){
-                this.canvas.width = 200;
-                this.canvas.height = 200;
+                this.canvas.width = 300;
+                this.canvas.height = 300;
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 var prova_Id = new component("10px", "Id", "red", 100, 100, "text");
-                prova_Id.text=id;
-                /*ctx = myRankingArea.context;
-                ctx.font = prova_Id.width + " " + prova_Id.height;
-                ctx.fillStyle = prova_Id.color;
-                ctx.fillText(prova_Id.text, prova_Id.x, prova_Id.y);
-                */
+                prova_Id.text = id;
+               
                 prova_Id.updateRanking();
+                
             }
-
         }
 
         var myGameArea = {
@@ -185,7 +181,7 @@ In the component constructor we test if the component is of type "text", and use
                        ) {
                    crash = false;
                 }
-                console.log(h)
+                //console.log(h)
 
                 return crash;
 
@@ -203,29 +199,17 @@ In the component constructor we test if the component is of type "text", and use
                     window.alert("GAME OVER");
                     window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
                     myGameArea.stop();
-                    //bisogna far in modo di farlo restartare senza che si muova all avvio
-                    /*
-                    myGameArea.clear();
-                    myGamePiece.newPos();
-                    myObstacles = [];
-                    startGame();
-                    */
+                    
                     window.location.reload();
                 }
             }
 
             if(myGamePiece.crashWithBorder(myGameArea.canvas.height)){
-            	//AVVENUTO CRASH CON OSTACOLO
+            	
                     window.alert("GAME OVER Bordo");
                     window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
                     myGameArea.stop();
-                    //bisogna far in modo di farlo restartare senza che si muova all avvio
-                    /*
-                    myGameArea.clear();
-                    myGamePiece.newPos();
-                    myObstacles = [];
-                    startGame();
-                    */
+                   
                     window.location.reload();
             }
 
@@ -245,9 +229,11 @@ In the component constructor we test if the component is of type "text", and use
                 minGap = 50;
                 maxGap = 200;
                 gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+                //ostacolo sopra
                 myObstacles.push(new component(60, 30, "policeCar.png", x, height,"image"));
+                //ostacolo sotto
                 myObstacles.push(new component(60, 30 , "policeCar.png", x, height+ gap,"image"));
-                //y = myGameArea.canvas.height - 200
+                
                 
             }
             
@@ -285,6 +271,8 @@ In the component constructor we test if the component is of type "text", and use
                
         }
         //per fermare il component (a che serve???)
-        </script>    </head>
+        </script>    
+    </head>
     <body onload = "startGame();">
+    </body>
 </html>
