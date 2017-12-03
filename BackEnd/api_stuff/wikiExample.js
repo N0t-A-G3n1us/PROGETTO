@@ -24,9 +24,9 @@ var stackUrl="https://en.wikipedia.org/w/api.php?format=json&"+
 function callback(error,res,body){
 	var info=JSON.parse(body);
 	let page = info.query.pages;
-	let pageId = Object.keys(info.query.pages)[0];
-	let content = pageId.extract;
-	console.log(content);
+//	let pageId = Object.keys(info.query.pages)[0];
+	//let content = pageId.extract;
+	//console.log(content);
 }
 
 

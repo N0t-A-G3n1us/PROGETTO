@@ -1,5 +1,4 @@
 
-
 var express=require('express');
 var app=express();
 
@@ -18,6 +17,11 @@ const latitude= 45.4642035
 const longitude= 9.189981999999986
 const radius= 6  // tra i 5 e i 32
 
+var images=[];
+
+
+
+
 
 Flickr.tokenOnly(flickrOptions, function(error, flickr) {
   // we can now use "flickr" as our API object,
@@ -32,7 +36,7 @@ Flickr.tokenOnly(flickrOptions, function(error, flickr) {
       radius: radius,
       min_taken_date: 975848456,  //2000 timestamp unix
       max_taken_date: 1512306056, //2017
-      per_page: 4,
+      per_page: 4,    // numero di img 
       format: "json"
 
 
@@ -53,6 +57,8 @@ Flickr.tokenOnly(flickrOptions, function(error, flickr) {
         imgUrl+=".jpg";
         
         console.log(imgUrl);
+        images.push(imgUrl);
+
        
         
       /*  // per avere tutti i formati della foto
@@ -67,22 +73,24 @@ Flickr.tokenOnly(flickrOptions, function(error, flickr) {
         });
         */
 
-
-
-
     }
+    invioDati(); 
      
 
 
   })
+  })
+
+function invioDati(){
+  console.log("INVIO DATI")
+  app.get('/:citta',function(req,res){
+    
+
+    res.send( "4 imgs per "+req.params.citta " " +images );
+})
 
 
-
-
-
-
-
-});
+}
 
 
 
