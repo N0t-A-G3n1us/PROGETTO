@@ -1,29 +1,9 @@
-/*var express = require('express');
-var app=express();
 
 
-app.get("/login",function(req,res){
-	
-	var red1="/oauth/request_token";
-	var red2="&oauth_callback=https%3A%2F%2Fexample.com";
-	var red="https://api.twitter.com/oauth/authenticate?oauth_token=w3BrsiYP7cHOg25mFJ3iKRGnqysAvcdehGHBYdeY207ts";
-	console.log("redirection on " +red);
-	res.redirect(red);
-	
-	
-	})
-	
-app.get("/",function(req,res){
-	
-	console.log("redirected from sign in succesful");
-	
-	
-	})
+// codice da : http://codetheory.in/how-to-use-twitter-oauth-with-node-oauth-in-your-node-js-express-application/
 
-app.get('*', function(req, res){
-    res.redirect('/login');
-});
-*/
+////////////////////////////////////////////////////////////
+
 
 var express = require('express');
 var OAuth = require('oauth');
@@ -69,6 +49,11 @@ var oauth = new OAuth.OAuth(
 });
 */
 
+
+app.use(session({ secret: 'IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi',
+				 cookie: { maxAge: 60000 }}))
+
+
 app.get('/auth/twitter', function(req, res){
 	console.log("CIAO");
 	oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
@@ -76,26 +61,40 @@ app.get('/auth/twitter', function(req, res){
 			res.send("Error getting oauth request token");
 		}
 		else{
-			console.log("STRONZO");
-			console.log(req);
-			//console.log(req.session.oauth)
-			res.redirect("https://twitter.com/oauth/authenticate?oauth_token=" + oauthToken);
+			console.log("ready to redirect on https://twitter.com/oauth/authenticate?oauth_token=XXX");			
+			req.session.oauth = {
+	        token: oauth_token,
+	        token_secret: oauth_token_secret
+	        
+	     	 };
+      		console.log(req.session.oauth);
+
+			res.redirect("https://twitter.com/oauth/authenticate?oauth_token=" + oauth_token);
 		}
 	});
 });
 
 app.get('/auth/twitter/callback', function(req, res, next){
-	if(request.session.oauth){
+	
+	console.log("\n"+ "verifying Authentication")
+
+
+	if(req.session.oauth){
 		req.session.oauth.verifier = req.query.oauth_verifier;
 		var oauth_data = req.session.oauth;
-		oauth.getOAuthAccessToken(oauth_data.token, oauth_data.token_secret, oauth_data.verifier, function(error, oauth_access_token, oauth_access_token_secret, results){
-			if(error) new Error(error);
-			else{
-				req.session.oauth.access_token = oauth_access_token;
-				req.session.oauth.access_token_secret = oauth_access_token_secret;
-				console.log(results, req.session.oauth);
-				res.send("Authentication succesful!")
-			}
+		oauth.getOAuthAccessToken(oauth_data.token, 
+			oauth_data.token_secret,
+			oauth_data.verifier,
+			function(error, oauth_access_token, oauth_access_token_secret, results){
+			
+				if(error) new Error(error);
+				else{
+					req.session.oauth.access_token = oauth_access_token;
+					req.session.oauth.access_token_secret = oauth_access_token_secret;
+					console.log(results, req.session.oauth);
+					//res.send("Authentication succesful!")
+					res.redirect("https://example.com");
+				}
 		});
 	}
 	else{
