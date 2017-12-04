@@ -83,10 +83,22 @@ Flickr.tokenOnly(flickrOptions, function(error, flickr) {
 
 function invioDati(){
   console.log("INVIO DATI")
+
+
+
+
+
   app.get('/:citta',function(req,res){
     
+    res.send( "4 imgs per "+ req.params.citta +" " +images );
+})
 
-    res.send( "4 imgs per "+req.params.citta " " +images );
+  app.get('/showData/:citta',function(req,res){
+    
+    res.render('showData',{nomeCitta: req.params.citta,
+                            imgs: images
+
+     });
 })
 
 
@@ -99,6 +111,8 @@ var server = app.listen(3000,function() {
   var host = server.address().address
   var port = server.address().port
   
+  app.set('view engine','ejs');
+
   console.log("app in ascolto at http://%s:%s",host,port);
   
   })
