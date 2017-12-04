@@ -69,6 +69,11 @@ var oauth = new OAuth.OAuth(
 });
 */
 
+
+app.use(session({ secret: 'IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi',
+				 cookie: { maxAge: 60000 }}))
+
+
 app.get('/auth/twitter', function(req, res){
 	console.log("CIAO");
 	oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
@@ -76,10 +81,14 @@ app.get('/auth/twitter', function(req, res){
 			res.send("Error getting oauth request token");
 		}
 		else{
-			console.log("STRONZO");
-			console.log(req);
-			//console.log(req.session.oauth)
-			res.redirect("https://twitter.com/oauth/authenticate?oauth_token=" + oauthToken);
+			console.log("ready to redirect on https://twitter.com/oauth/authenticate?oauth_token=XXX");			
+			req.session.oauth = {
+	        token: oauth_token,
+	        token_secret: oauth_token_secret
+	     	 };
+      		console.log(req.session.oauth);
+
+			res.redirect("https://twitter.com/oauth/authenticate?oauth_token=" + oauth_token);
 		}
 	});
 });
