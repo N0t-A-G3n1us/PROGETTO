@@ -25,34 +25,82 @@ app.get('*', function(req, res){
 });
 */
 
-var OAuth = require('OAuth');
-var oauth = new OAuth.OAuth(
-	 'https://api.twitter.com/oauth/request_token',
-	 'https://api.twitter.com/oauth/access_token',
-	 'IPbVAysd5FgG8f05raz1xi9YP',
-	 'IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi',
-	 '1.0A',
-	 null,
-	 'HMAC-SHA1'
-	);
-oauth.get(
-     'https://api.twitter.com/1.1/trends/place.json?id=934169103526490114',
-     '934169103526490114-trZFgqQ7u2j1nfL39tCZQThaLcu5flm',
-     '5Q0P2SMcYyLdVrLtCUGhqxqbxoLETSpbi3ScxDl2a67B9',
-     function(e, data, res){
-     	if(e) console.error(e);
-     	console.log(require('util').inspect(data));
-     	done();
-     }
-);
+var express = require('express');
+var OAuth = require('oauth');
+var request = require('request');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+//var sys = require('sys');
 
-/*var server=app.listen(3000,function(){
-	
-	var host =server.address().adress
-	var port =server.address().port
-	
-	console.log("Server running at "+host +" "+ port); 
-	
-	
+//var _twitterConsumerKey = "IPbVAysd5FgG8f05raz1xi9YP";
+//var _twitterConsumerSecret = "IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi";
+
+var app = express();
+app.use(bodyParser.urlencoded({extended: false}));
+
+var oauth = new OAuth.OAuth(
+		 "https://api.twitter.com/oauth/request_token",
+		 "https://api.twitter.com/oauth/access_token",
+		 "IPbVAysd5FgG8f05raz1xi9YP",
+		 "IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi",
+		 "1.0",
+		 "http://127.0.0.1:5000/auth/twitter/callback",
+		 "HMAC-SHA1"
+		);
+
+
+/*app.configure('development', function(){
+	app.use(express.errorHandler({dumpExceptions: true, showStack: true}));
+	app.use(express.logger());
+	app.use(express.cookieDecoder());
+	app.use(express.session());
 });
 */
+
+/*app.dynamicHelpers({
+	session: function(req, res){
+		return req.session;
+	}
+});
+*/
+
+/*app.get('/', function(req, res){
+	res.send('Hello World');
+});
+*/
+
+app.get('/auth/twitter', function(req, res){
+	console.log("CIAO");
+	oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
+		if(error){
+			res.send("Error getting oauth request token");
+		}
+		else{
+			console.log("STRONZO");
+			console.log(req);
+			//console.log(req.session.oauth)
+			res.redirect("https://twitter.com/oauth/authenticate?oauth_token=" + oauthToken);
+		}
+	});
+});
+
+app.get('/auth/twitter/callback', function(req, res, next){
+	if(request.session.oauth){
+		req.session.oauth.verifier = req.query.oauth_verifier;
+		var oauth_data = req.session.oauth;
+		oauth.getOAuthAccessToken(oauth_data.token, oauth_data.token_secret, oauth_data.verifier, function(error, oauth_access_token, oauth_access_token_secret, results){
+			if(error) new Error(error);
+			else{
+				req.session.oauth.access_token = oauth_access_token;
+				req.session.oauth.access_token_secret = oauth_access_token_secret;
+				console.log(results, req.session.oauth);
+				res.send("Authentication succesful!")
+			}
+		});
+	}
+	else{
+		next(new Error('No OAuth info stored in the session'));
+	}
+});
+
+app.listen(5000);
