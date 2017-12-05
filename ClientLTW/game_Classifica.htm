@@ -182,12 +182,13 @@ In the component constructor we test if the component is of type "text", and use
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
-                var othertop = otherobj.y;
-                var otherbottom = 0;
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
                 var crash = true;   // presuppongo collisione
-                if ((mybottom < othertop) ||    //verifico se non c è stata
-                       (mytop > otherbottom) 
-                       ) {
+                if (this.y > 0 && //verifico se non c è stata 
+                       this.y + this.height < otherobj.height
+                       && this.x > 0 
+                       && this.x + this.width < otherobj.width) {
                    crash = false;
                 }
                 //console.log(h)
