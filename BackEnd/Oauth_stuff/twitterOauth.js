@@ -86,8 +86,10 @@ app.get('/auth/twitter', function(req, res){
 	        token: oauth_token,
 	        token_secret: oauth_token_secret
 	     	 };
-      		console.log(req.session.oauth);
-
+      		//console.log(req.session.oauth);
+			//console.log("STRONZO");
+			//console.log(req);
+			//console.log(req.session.oauth)
 			res.redirect("https://twitter.com/oauth/authenticate?oauth_token=" + oauth_token);
 		}
 	});
