@@ -177,17 +177,66 @@ In the component constructor we test if the component is of type "text", and use
                 return crash;
             }
 
-            this.crashWithBorder = function(otherobj){
+            this.crashWithBorderLeft = function(otherobj){
             	var myleft = this.x;
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
-                var othertop = otherobj.y;
-                var otherbottom = 0;
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
                 var crash = true;   // presuppongo collisione
-                if ((mybottom < othertop) ||    //verifico se non c è stata
-                       (mytop > otherbottom) 
-                       ) {
+                if (this.x > 0){ //verifico se non c è stata ì
+                   crash = false;
+                }
+                //console.log(h)
+
+                return crash;
+
+            }
+
+            this.crashWithBorderRight = function(otherobj){
+            	var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
+                var crash = true;   // presuppongo collisione
+                if (this.x + this.width < otherobj.width){ //verifico se non c è stata ì
+                   crash = false;
+                }
+                //console.log(h)
+
+                return crash;
+
+            }
+
+            this.crashWithBorderTop = function(otherobj){
+            	var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
+                var crash = true;   // presuppongo collisione
+                if (this.y > 0){ //verifico se non c è stata ì
+                   crash = false;
+                }
+                //console.log(h)
+
+                return crash;
+
+            }
+
+            this.crashWithBorderBottom = function(otherobj){
+            	var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
+                var crash = true;   // presuppongo collisione
+                if (this.y + this.height < otherobj.height){ //verifico se non c è stata ì
                    crash = false;
                 }
                 //console.log(h)
@@ -212,7 +261,7 @@ In the component constructor we test if the component is of type "text", and use
                     window.location.reload();
                 }
             }
-       		if(myGamePiece.crashWithBorder(myGameArea.canvas)){
+       		/*if(myGamePiece.crashWithBorder(myGameArea.canvas)){
         	
                 window.alert("GAME OVER Bordo");
                 window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
@@ -220,6 +269,7 @@ In the component constructor we test if the component is of type "text", and use
                
                 window.location.reload();
         	}
+        	*/
 
             myGameArea.clear();
 
@@ -249,13 +299,13 @@ In the component constructor we test if the component is of type "text", and use
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             //movimenti: W,A,S,D
-            if (myGameArea.keys && myGameArea.keys[65])
+            if (myGameArea.keys && myGameArea.keys[65] && (!myGamePiece.crashWithBorderLeft(myGameArea.canvas)))
                 {myGamePiece.speedX = -1.5; }
-            if (myGameArea.keys && myGameArea.keys[68]) 
+            if (myGameArea.keys && myGameArea.keys[68] && (!myGamePiece.crashWithBorderRight(myGameArea.canvas))) 
                 {myGamePiece.speedX = 1.5; }
-            if (myGameArea.keys && myGameArea.keys[87]) 
+            if (myGameArea.keys && myGameArea.keys[87] && (!myGamePiece.crashWithBorderTop(myGameArea.canvas))) 
                 {myGamePiece.speedY = -1.5; }
-            if (myGameArea.keys && myGameArea.keys[83]) 
+            if (myGameArea.keys && myGameArea.keys[83] && (!myGamePiece.crashWithBorderBottom(myGameArea.canvas))) 
                 {myGamePiece.speedY = 1.5; }
             
             for (i = 0; i < myObstacles.length; i += 1) {
