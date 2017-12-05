@@ -178,71 +178,35 @@ In the component constructor we test if the component is of type "text", and use
             }
 
             this.crashWithBorderLeft = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
-                //var otherbottom = otherobj.y;
                 var crash = true;   // presuppongo collisione
                 if (this.x > 0){ //verifico se non c è stata
                    crash = false;
                 }
-                //console.log(h)
-
                 return crash;
-
             }
 
             this.crashWithBorderRight = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
-                //var otherbottom = otherobj.y;
                 var crash = true;   // presuppongo collisione
                 if (this.x + this.width < otherobj.width){ //verifico se non c è stata
                    crash = false;
                 }
-                //console.log(h)
-
                 return crash;
-
             }
 
             this.crashWithBorderTop = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
-                //var otherbottom = otherobj.y;
                 var crash = true;   // presuppongo collisione
                 if (this.y > 0){ //verifico se non c è stata
                    crash = false;
                 }
-                //console.log(h)
-
                 return crash;
-
             }
 
             this.crashWithBorderBottom = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
-                //var otherbottom = otherobj.y;
                 var crash = true;   // presuppongo collisione
                 if (this.y + this.height < otherobj.height){ //verifico se non c è stata
                 	crash = false;
 				}
-                //console.log(h)
-
                 return crash;
-
             }
             
         }
