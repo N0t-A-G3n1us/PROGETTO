@@ -19,6 +19,7 @@ In the component constructor we test if the component is of type "text", and use
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         
         <style >
+			
             canvas {
                 border:1px solid #d3d3d3;
                 background-color: grey;
@@ -26,7 +27,31 @@ In the component constructor we test if the component is of type "text", and use
                 margin-top: 10%;
                 border-color: black;
             }
+            
+            h1 {
+				font-family: fantasy,serif;
+				color: blue;
+				text-shadow: 2px 2px 5px dodgerBlue;
+				margin-top: -15%;
+				marging-left: 10%;
+				}
+			h2 {
+				font-family: serif,"Times New Roman";
+				color:white;
+				
+				
+				}	
+				
+            
         </style>
+        
+        
+        <title> Car game </title>
+        <br>
+        <h1 name="id"> CAR GAME <h1>
+        <h2 id="istruzioni"> Schiva le auto della polizia con: "W","A","S","D" </h2>
+
+        
         <script type = "text/javascript" language = "javascript">
 
         var myGamePiece;
@@ -61,6 +86,9 @@ In the component constructor we test if the component is of type "text", and use
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 var prova_Id = new component("10px", "Id", "red", 100, 100, "text");
+                var bg = new component(480,670,"paper.jpg",0,0,"image");
+
+                
                 prova_Id.text = id;
 
                 //var myScore = new component("30px", "Consolas", "red", 50, 50, "text");
@@ -71,9 +99,11 @@ In the component constructor we test if the component is of type "text", and use
                 */
                 //var stringa = new component("10px", "Id", "red", 50, 50, "text");
                 //stringa.text = "stringa";
-
+				
                 prova_Id.updateRanking();
                 
+                bg.updateRanking();
+				
             }
         }
 
@@ -147,10 +177,19 @@ In the component constructor we test if the component is of type "text", and use
 
             this.updateRanking = function(){
                 ctx = myRankingArea.context;
-                ctx.font = this.width + " " + this.height;
-                ctx.fillStyle = color;
-                ctx.fillText(this.text, this.x, this.y);
-            }
+                if (type == "image") {
+					ctx.drawImage(this.image,
+					this.x,
+					this.y,
+					this.width, this.height);
+                }
+                else if(this.type == "text"){
+                    ctx.font = this.width + " " + this.height;
+                    ctx.fillStyle = color;
+                    ctx.fillText(this.text, this.x, this.y);
+                }
+                
+                }
             
             this.newPos = function() {  //cambia la posizione del component
                 //lavorando su speedX e speedY 
@@ -295,6 +334,17 @@ In the component constructor we test if the component is of type "text", and use
         //per fermare il component (a che serve???)
         </script>    
     </head>
-    <body onload = "startGame();">
+    	
+
+    <body style="background: url('bgGamePage.jpg') no-repeat fixed bottom;" onload = "startGame();"> 
+
+    <!-- 
+    -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+        -->
+     
     </body>
 </html>
