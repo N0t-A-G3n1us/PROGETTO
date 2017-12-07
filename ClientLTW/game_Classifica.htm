@@ -43,7 +43,7 @@ In the component constructor we test if the component is of type "text", and use
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             
-            //myId=new component("10px", "Id", "red", 250, 100, "text");
+            myId=new component("10px", "Id", "red", 250, 100, "text");
             
             myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
            
@@ -61,11 +61,8 @@ In the component constructor we test if the component is of type "text", and use
                 this.context = this.canvas.getContext("2d");
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 var prova_Id = new component("10px", "Id", "red", 100, 100, "text");
-<<<<<<< Updated upstream
                 prova_Id.text = id;
-               
-=======
-                prova_Id.text = myScore.text;
+
                 //var myScore = new component("30px", "Consolas", "red", 50, 50, "text");
                 /*ctx = myRankingArea.context;
                 ctx.font = prova_Id.width + " " + prova_Id.height;
@@ -74,7 +71,7 @@ In the component constructor we test if the component is of type "text", and use
                 */
                 //var stringa = new component("10px", "Id", "red", 50, 50, "text");
                 //stringa.text = "stringa";
->>>>>>> Stashed changes
+
                 prova_Id.updateRanking();
                 
             }
@@ -180,19 +177,68 @@ In the component constructor we test if the component is of type "text", and use
                 return crash;
             }
 
-            this.crashWithBorder = function(h){
+            this.crashWithBorderLeft = function(otherobj){
             	var myleft = this.x;
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
-                var othertop = h;
-                var otherbottom = 0;
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
                 var crash = true;   // presuppongo collisione
-                if ((mybottom < othertop) ||    //verifico se non c è stata
-                       (mytop > otherbottom) 
-                       ) {
+                if (this.x > 0){ //verifico se non c è stata
                    crash = false;
                 }
+                //console.log(h)
+
+                return crash;
+
+            }
+
+            this.crashWithBorderRight = function(otherobj){
+            	var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
+                var crash = true;   // presuppongo collisione
+                if (this.x + this.width < otherobj.width){ //verifico se non c è stata
+                   crash = false;
+                }
+                //console.log(h)
+
+                return crash;
+
+            }
+
+            this.crashWithBorderTop = function(otherobj){
+            	var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
+                var crash = true;   // presuppongo collisione
+                if (this.y > 0){ //verifico se non c è stata
+                   crash = false;
+                }
+                //console.log(h)
+
+                return crash;
+
+            }
+
+            this.crashWithBorderBottom = function(otherobj){
+            	var myleft = this.x;
+                var myright = this.x + (this.width);
+                var mytop = this.y;
+                var mybottom = this.y + (this.height);
+                //var othertop = otherobj.y;
+                //var otherbottom = otherobj.y;
+                var crash = true;   // presuppongo collisione
+                if (this.y + this.height < otherobj.height){ //verifico se non c è stata
+                	crash = false;
+				}
                 //console.log(h)
 
                 return crash;
@@ -215,15 +261,15 @@ In the component constructor we test if the component is of type "text", and use
                     window.location.reload();
                 }
             }
-
-            if(myGamePiece.crashWithBorder(myGameArea.canvas.height)){
-            	
-                    window.alert("GAME OVER Bordo");
-                    window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
-                    myGameArea.stop();
-                   
-                    window.location.reload();
-            }
+       		/*if(myGamePiece.crashWithBorder(myGameArea.canvas)){
+        	
+                window.alert("GAME OVER Bordo");
+                window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
+                myGameArea.stop();
+               
+                window.location.reload();
+        	}
+        	*/
 
             myGameArea.clear();
 
@@ -253,13 +299,13 @@ In the component constructor we test if the component is of type "text", and use
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             //movimenti: W,A,S,D
-            if (myGameArea.keys && myGameArea.keys[65])
+            if (myGameArea.keys && myGameArea.keys[65] && (!myGamePiece.crashWithBorderLeft(myGameArea.canvas)))
                 {myGamePiece.speedX = -1.5; }
-            if (myGameArea.keys && myGameArea.keys[68]) 
+            if (myGameArea.keys && myGameArea.keys[68] && (!myGamePiece.crashWithBorderRight(myGameArea.canvas))) 
                 {myGamePiece.speedX = 1.5; }
-            if (myGameArea.keys && myGameArea.keys[87]) 
+            if (myGameArea.keys && myGameArea.keys[87] && (!myGamePiece.crashWithBorderTop(myGameArea.canvas))) 
                 {myGamePiece.speedY = -1.5; }
-            if (myGameArea.keys && myGameArea.keys[83]) 
+            if (myGameArea.keys && myGameArea.keys[83] && (!myGamePiece.crashWithBorderBottom(myGameArea.canvas))) 
                 {myGamePiece.speedY = 1.5; }
             
             for (i = 0; i < myObstacles.length; i += 1) {
