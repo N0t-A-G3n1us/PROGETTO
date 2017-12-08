@@ -55,11 +55,18 @@ localStorage.utenti = JSON.stringify(u);
 ordina(u);
 return true;
 }
+function Rigioca() {
+	window.location.href = 'game_Classifica.htm?name='+MyNomeUtente;
+	return true;
+}
+
+
+
 </script>
 </head>
 <body onload="inizializzaStorageUtenti()">
 
-
+BRAVO! PREMI INVIA PER INVIARE IL TUO SCORE!
 
 <form action="" method="post" name="registrazione" onSubmit="return inserisciUtente();"
 accept-charset="utf-8">
@@ -68,6 +75,11 @@ accept-charset="utf-8">
 <input type="button" value="Reset Storage" onclick="resetStorageUtenti();">
 <input type="reset" value="Reset form">
 </form>
+
+
+<button onclick="Rigioca()">RIGIOCA</button>
+
+
 
 
 
