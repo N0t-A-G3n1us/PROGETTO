@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="ISO-8859-1"/>
+		
+		<script>
+			var args=window.location.search.substr(1).toString().split("=");
+			var MyNomeUtente = args[1];
+			var MyPunteggio =  args[2];
+
+			function inizializzaStorageUtenti(){
+				if (typeof(localStorage.utenti) == "undefined") {
+					localStorage.utenti="[]";
+			}
+			}
+			function resetStorageUtenti(){
+				localStorage.utenti="[]";
+			}
+			function stampaStorageSemplice(){
+				var u = JSON.parse(localStorage.utenti);
+				var l = u.length;
+				var s = new String("<h3>Stato di localStorage:</h3>");
+				for (i=0;i<l;i++)
+				s += JSON.stringify(u[i])+"<br/>";
+				document.getElementById("vistaStorage").innerHTML=s;
+				return true;
+			}
+
+			function ordina(u){
+				var l = u.length;
+				for(i = 0; i < l-1; i++){
+					for(j = l-1; j > i; j--){
+						if(u[j-1].m < u[j].m){
+							aux = u[j-1];
+							u[j-1] = u[j];
+							u[j] = aux;
+						}
+					}
+				}
+			}
+				
+			
+
+			function uguali(u,o){
+				if ((u.c==o.c)&&(u.n==o.n)&&(u.m==o.m))
+				return true;
+				return false;
+			}
+			function inserisciUtente() {
+
+				var u = JSON.parse(localStorage.utenti);
+				var nextpos = u.length;
+				var o ={ nick: MyNomeUtente , score: MyPunteggio};
+				alert("Dati inseriti correttamente");
+				u[nextpos] = o;
+				localStorage.utenti = JSON.stringify(u);
+				ordina(u);
+				return true;
+			}
+			function Rigioca() {
+				window.location.href = 'game_Classifica.htm?name='+MyNomeUtente;
+				return true;
+			}
+
+
+
+			</script>
+		</head>
+	<body onload="inizializzaStorageUtenti()">
+
+		BRAVO! PREMI INVIA PER INVIARE IL TUO SCORE!
+
+		<form action="" method="post" name="registrazione" onSubmit="return inserisciUtente();"
+		accept-charset="utf-8">
+		<input type="submit" value="Invia">
+		<input type="button" value="Stampa Storage Semplice" onclick="stampaStorageSemplice();">
+		<input type="button" value="Reset Storage" onclick="resetStorageUtenti();">
+		<input type="reset" value="Reset form">
+		</form>
+
+
+		<button onclick="Rigioca()">RIGIOCA</button>
+
+
+
+
+
+		<hr/>
+		<div id="vistaStorage"></div>
+		<hr/>
+	</body>
+</html>
