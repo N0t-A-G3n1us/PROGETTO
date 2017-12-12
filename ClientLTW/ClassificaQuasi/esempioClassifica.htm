@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1"/>
-		
+
 		<script>
 			var args=window.location.search.substr(1).toString().split("=");
 			var MyNomeUtente = args[1];
@@ -30,7 +30,7 @@
 				var l = u.length;
 				for(i = 0; i < l-1; i++){
 					for(j = l-1; j > i; j--){
-						if(u[j-1].m < u[j].m){
+						if(u[j-1].score < u[j].score){
 							aux = u[j-1];
 							u[j-1] = u[j];
 							u[j] = aux;
@@ -38,14 +38,16 @@
 					}
 				}
 			}
-				
-			
+
+
 
 			function uguali(u,o){
-				if ((u.c==o.c)&&(u.n==o.n)&&(u.m==o.m))
-				return true;
+				if ((u.nick==o.nick)&&(u.score==o.score)){
+					return true;
+				}
 				return false;
 			}
+
 			function inserisciUtente() {
 
 				var u = JSON.parse(localStorage.utenti);
@@ -53,8 +55,8 @@
 				var o ={ nick: MyNomeUtente , score: MyPunteggio};
 				alert("Dati inseriti correttamente");
 				u[nextpos] = o;
-				localStorage.utenti = JSON.stringify(u);
 				ordina(u);
+				localStorage.utenti = JSON.stringify(u);
 				return true;
 			}
 			function Rigioca() {
