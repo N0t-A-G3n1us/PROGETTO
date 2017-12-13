@@ -59,6 +59,7 @@
 				localStorage.utenti = JSON.stringify(u);
 				return true;
 			}
+			
 			function Rigioca() {
 				window.location.href = 'game_Classifica.htm?name='+MyNomeUtente;
 				return true;
@@ -77,7 +78,7 @@
 		<input type="submit" value="Invia">
 		<input type="button" value="Stampa Storage Semplice" onclick="stampaStorageSemplice();">
 		<input type="button" value="Reset Storage" onclick="resetStorageUtenti();">
-		<input type="reset" value="Reset form">
+		<!--<input type="reset" value="Reset form">-->
 		</form>
 
 

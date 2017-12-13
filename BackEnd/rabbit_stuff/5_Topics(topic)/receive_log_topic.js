@@ -1,5 +1,13 @@
 #!/usr/bin/env node
 
+//PROGRAMMA SUBSCRIBER
+//To receive all the logs:
+//$   ./receive_logs_topic.js "#"
+
+//To receive all logs from the facility "kern":
+//$   ./receive_logs_topic.js "kern.*"
+
+
 var amqp = require('amqplib/callback_api');
 
 var args = process.argv.slice(2);
