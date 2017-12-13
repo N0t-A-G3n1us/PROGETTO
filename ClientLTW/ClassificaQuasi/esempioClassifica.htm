@@ -2,31 +2,51 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1"/>
-
-		<script>
+	
+		<style>
+			
+			input{
+				font-size:150%;
+				
+				}
+			button{
+				font-size:200%;
+				color: blue;
+				}
+			p{
+				font-size:150%;
+				}
+			
+			</style>
+	
+		<script type = "text/javascript" language="javascript">
 			var args=window.location.search.substr(1).toString().split("=");
 			var MyNomeUtente = args[1];
-			var MyPunteggio =  args[2];
+			var MyPunteggio = args[2];
 
-			function inizializzaStorageUtenti(){
+			function inizializzaClassificaUtenti(){
 				if (typeof(localStorage.utenti) == "undefined") {
 					localStorage.utenti="[]";
 			}
 			}
-			function resetStorageUtenti(){
+			
+			function resetClassificaUtenti(){
 				localStorage.utenti="[]";
 			}
-			function stampaStorageSemplice(){
+			function stampaClassifica(){
 				var u = JSON.parse(localStorage.utenti);
-				var l = u.length;
-				var s = new String("<h3>Stato di localStorage:</h3>");
+				var l = u.length<=10? u.length:10;
+				
+				var s = new String("<h3>CLASSIFICA ATTUALE:</h3>");
+				
 				for (i=0;i<l;i++)
-				s += JSON.stringify(u[i])+"<br/>";
+					s += JSON.stringify(u[i])+"<br/>";
+				
 				document.getElementById("vistaStorage").innerHTML=s;
 				return true;
 			}
 
-			function ordina(u){
+			function ordina(u){	//costo O(n^2) per array piccolo
 				var l = u.length;
 				for(i = 0; i < l-1; i++){
 					for(j = l-1; j > i; j--){
@@ -37,15 +57,6 @@
 						}
 					}
 				}
-			}
-
-
-
-			function uguali(u,o){
-				if ((u.nick==o.nick)&&(u.score==o.score)){
-					return true;
-				}
-				return false;
 			}
 
 			function inserisciUtente() {
@@ -69,27 +80,25 @@
 
 			</script>
 		</head>
-	<body onload="inizializzaStorageUtenti()">
+	<body style="background: url('paper.jpg');" onload="inizializzaClassificaUtenti()">
 
+		<p>
 		BRAVO! PREMI INVIA PER INVIARE IL TUO SCORE!
-
+		</p>
 		<form action="" method="post" name="registrazione" onSubmit="return inserisciUtente();"
 		accept-charset="utf-8">
 		<input type="submit" value="Invia">
-		<input type="button" value="Stampa Storage Semplice" onclick="stampaStorageSemplice();">
-		<input type="button" value="Reset Storage" onclick="resetStorageUtenti();">
-		<!--<input type="reset" value="Reset form">-->
+		<input type="button" value="Vedi Classifica" onclick="stampaClassifica();">
+		<input type="button" value="Reset Classifica" onclick="resetClassificaUtenti();">
+
 		</form>
 
-
-		<button onclick="Rigioca()">RIGIOCA</button>
-
-
-
+		<br>
+		<button value="RIGIOCA" onclick="Rigioca()"> RIGIOCA </button>
 
 
 		<hr/>
-		<div id="vistaStorage"></div>
+			<div id="vistaStorage"></div>
 		<hr/>
 	</body>
 </html>

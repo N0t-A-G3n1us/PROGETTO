@@ -17,7 +17,7 @@ In the component constructor we test if the component is of type "text", and use
 		<link rel = "prev" type="text/html" >
         
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        
+                
         <style >
 			
             canvas {
@@ -38,9 +38,8 @@ In the component constructor we test if the component is of type "text", and use
 			h2 {
 				font-family: serif,"Times New Roman";
 				color:white;
-				
-				
 				}	
+			
 				
             
         </style>
@@ -74,37 +73,8 @@ In the component constructor we test if the component is of type "text", and use
            
             myBackground= new component(480,270,"street.jpg",0,0,"image"); 
 
-            myRankingArea.start();
+          //  myRankingArea.start();
             myGameArea.start();
-        }
-
-        var myRankingArea ={
-            canvas: document.createElement("canvas"),
-            start: function(){
-                this.canvas.width = 300;
-                this.canvas.height = 300;
-                this.context = this.canvas.getContext("2d");
-                document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-                var prova_Id = new component("10px", "Id", "red", 100, 100, "text");
-                //var bg = new component(480,670,"paper.jpg",0,0,"image");
-
-                
-                prova_Id.text = id;
-
-                //var myScore = new component("30px", "Consolas", "red", 50, 50, "text");
-                /*ctx = myRankingArea.context;
-                ctx.font = prova_Id.width + " " + prova_Id.height;
-                ctx.fillStyle = prova_Id.color;
-                ctx.fillText(prova_Id.text, prova_Id.x, prova_Id.y);
-                */
-                //var stringa = new component("10px", "Id", "red", 50, 50, "text");
-                //stringa.text = "stringa";
-				
-                prova_Id.updateRanking();
-                
-                //bg.updateRanking();
-				
-            }
         }
 
         var myGameArea = {
@@ -151,8 +121,10 @@ In the component constructor we test if the component is of type "text", and use
 			}
             this.width = width;
             this.height = height;
+            
             this.speedX = 0;    //sono usati come indicatori di velocita
             this.speedY = 0;
+            
             this.x = x;
             this.y = y; 
             
@@ -175,21 +147,7 @@ In the component constructor we test if the component is of type "text", and use
                 }
             }
 
-            this.updateRanking = function(){
-                ctx = myRankingArea.context;
-                if (type == "image") {
-					ctx.drawImage(this.image,
-					this.x,
-					this.y,
-					this.width, this.height);
-                }
-                else if(this.type == "text"){
-                    ctx.font = this.width + " " + this.height;
-                    ctx.fillStyle = color;
-                    ctx.fillText(this.text, this.x, this.y);
-                }
-                
-                }
+            
             
             this.newPos = function() {  //cambia la posizione del component
                 //lavorando su speedX e speedY 
@@ -202,10 +160,13 @@ In the component constructor we test if the component is of type "text", and use
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
+                
                 var otherleft = otherobj.x;
                 var otherright = otherobj.x + (otherobj.width);
+                
                 var othertop = otherobj.y;
                 var otherbottom = otherobj.y + (otherobj.height);
+                
                 var crash = true;   // presuppongo collisione
                 if ((mybottom < othertop) ||    //verifico se non c è stata
                        (mytop > otherbottom) ||
@@ -221,14 +182,13 @@ In the component constructor we test if the component is of type "text", and use
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
-                //var otherbottom = otherobj.y;
+                
                 var crash = true;   // presuppongo collisione
                 if (this.x > 0){ //verifico se non c è stata
                    crash = false;
                 }
+                
                 //console.log(h)
-
                 return crash;
 
             }
@@ -238,8 +198,7 @@ In the component constructor we test if the component is of type "text", and use
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
-                //var otherbottom = otherobj.y;
+                
                 var crash = true;   // presuppongo collisione
                 if (this.x + this.width < otherobj.width){ //verifico se non c è stata
                    crash = false;
@@ -255,8 +214,8 @@ In the component constructor we test if the component is of type "text", and use
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
                 //var otherbottom = otherobj.y;
+                
                 var crash = true;   // presuppongo collisione
                 if (this.y > 0){ //verifico se non c è stata
                    crash = false;
@@ -273,13 +232,14 @@ In the component constructor we test if the component is of type "text", and use
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
                 //var othertop = otherobj.y;
-                //var otherbottom = otherobj.y;
+                
                 var crash = true;   // presuppongo collisione
                 if (this.y + this.height < otherobj.height){ //verifico se non c è stata
                 	crash = false;
 				}
                 //console.log(h)
-
+ 
+ 
                 return crash;
 
             }
@@ -293,25 +253,14 @@ In the component constructor we test if the component is of type "text", and use
                 //controllo : crash con ostacolo myObstacle[i] ?
                 if (myGamePiece.crashWith(myObstacles[i])) {
                     //AVVENUTO CRASH CON OSTACOLO
+                    
                     window.alert("GAME OVER");
                     window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
                     myGameArea.stop();
-                    //QUESTO PERCORSO NON VA TANTO BEEEEENEEEE
+                    //passaggio alla pagina successiva (classifica)
                     window.location.href = 'esempioClassifica.htm?name='+id+'='+myGameArea.frameNo;
-
-                    
-                    //window.location.reload();
                 }
             }
-       		/*if(myGamePiece.crashWithBorder(myGameArea.canvas)){
-        	
-                window.alert("GAME OVER Bordo");
-                window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
-                myGameArea.stop();
-               
-                window.location.reload();
-        	}
-        	*/
 
             myGameArea.clear();
 
@@ -325,10 +274,13 @@ In the component constructor we test if the component is of type "text", and use
                 // Per ostacoli di dimensione random
                 minHeight = 20;
                 maxHeight = 200;
+                
                 height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
+                
                 minGap = 50;
                 maxGap = 200;
                 gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
+                
                 //ostacolo sopra
                 myObstacles.push(new component(60, 30, "policeCar.png", x, height,"image"));
                 //ostacolo sotto
@@ -340,6 +292,7 @@ In the component constructor we test if the component is of type "text", and use
             
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
+            
             //movimenti: W,A,S,D
             if (myGameArea.keys && myGameArea.keys[65] && (!myGamePiece.crashWithBorderLeft(myGameArea.canvas)))
                 {myGamePiece.speedX = -1.5; }
@@ -358,11 +311,11 @@ In the component constructor we test if the component is of type "text", and use
 
                 myObstacles[i].newPos();
                 myObstacles[i].update();
+                
             }
 
 
             myScore.text = "Score: " + myGameArea.frameNo;
-            
             myScore.update();
             
             myGamePiece.newPos();
@@ -377,13 +330,7 @@ In the component constructor we test if the component is of type "text", and use
 
     <body style="background: url('bgGamePage.jpg') no-repeat fixed bottom;" onload = "startGame();"> 
 
-    <!-- 
-    -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px);
-        -->
+
      
     </body>
 </html>
