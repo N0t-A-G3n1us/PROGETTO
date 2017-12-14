@@ -21,20 +21,18 @@ In the component constructor we test if the component is of type "text", and use
         <style >
 			
             canvas {
+                display: block;
+				margin: 0 auto;
+				margin-top: 20%;
+				
                 border:1px solid #d3d3d3;
                 background-color: grey;
-                margin-left: 10%;
-                margin-top: 10%;
                 border-color: black;
-            }
+				
+				width: 800px;
+				
+						}
             
-            h1 {
-				font-family: fantasy,serif;
-				color: blue;
-				text-shadow: 2px 2px 5px dodgerBlue;
-				margin-top: -15%;
-				font-size: 170%;
-				}
 			h2 {
 				font-family: serif,"Times New Roman";
 				color:white;
@@ -47,7 +45,7 @@ In the component constructor we test if the component is of type "text", and use
         
         <title> Car game </title>
         <br>
-        <h1 name="id"> CAR GAME <h1>
+        
         <h2 id="istruzioni"> Schiva le auto della polizia con: "W","A","S","D" </h2>
 
         
@@ -328,7 +326,8 @@ In the component constructor we test if the component is of type "text", and use
     </head>
     	
 
-    <body style="background: url('bgGamePage.jpg') no-repeat fixed bottom;" onload = "startGame();"> 
+    <body style="background: url('bgGamePage.jpg') no-repeat fixed bottom;
+    background-size: cover;" onload = "startGame();"> 
 
 
      

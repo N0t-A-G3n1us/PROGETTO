@@ -17,6 +17,7 @@
 				font-size:150%;
 				}
 			
+			
 			</style>
 	
 		<script type = "text/javascript" language="javascript">
@@ -38,10 +39,25 @@
 				var l = u.length<=10? u.length:10;
 				
 				var s = new String("<h3>CLASSIFICA ATTUALE:</h3>");
+				s+="<table border=\"1\">";
+				s+="<th> NICKNAME</th>" + "<th> SCORE </th>";
 				
-				for (i=0;i<l;i++)
-					s += JSON.stringify(u[i])+"<br/>";
-				
+				for (i=0;i<l;i++){
+					s+="<tr>";
+					
+					var stringed=JSON.stringify(u[i]);
+					s+="<td>";
+					var nick=stringed.split(',')[0].split(':')[1];
+					
+					console.log( stringed.split(',') )
+					s+=u[i].nick;
+					s+="</td>";
+					s+="<td>";
+					s+=u[i].score;
+					s+="</td>";
+					s+="</tr>";
+				}
+				s+="</table>"
 				document.getElementById("vistaStorage").innerHTML=s;
 				return true;
 			}
@@ -59,15 +75,29 @@
 				}
 			}
 
+			function uguali(el, o){
+				if((el.nick == o.nick) && (el.score == o.score) ){
+					return true;
+				}
+				return false;
+			}
+		
 			function inserisciUtente() {
 
 				var u = JSON.parse(localStorage.utenti);
 				var nextpos = u.length;
-				var o ={ nick: MyNomeUtente , score: MyPunteggio};
-				alert("Dati inseriti correttamente");
+				var o ={nick: MyNomeUtente , score: MyPunteggio};
+
+				for ( el of u) {	//controllo su tutto l array
+					if(uguali(el,o)){
+						alert("coppia nick-score gia presente");
+						return false;
+					}
+				}
 				u[nextpos] = o;
 				ordina(u);
 				localStorage.utenti = JSON.stringify(u);
+				alert("Dati inseriti correttamente");
 				return true;
 			}
 			
