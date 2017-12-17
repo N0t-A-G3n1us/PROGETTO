@@ -2,12 +2,12 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1"/>
-	
+
 		<style>
-			
+
 			input{
 				font-size:150%;
-				
+
 				}
 			button{
 				font-size:200%;
@@ -16,10 +16,10 @@
 			p{
 				font-size:150%;
 				}
-			
-			
+
+
 			</style>
-	
+
 		<script type = "text/javascript" language="javascript">
 			var args=window.location.search.substr(1).toString().split("=");
 			var MyNomeUtente = args[1];
@@ -30,25 +30,25 @@
 					localStorage.utenti="[]";
 			}
 			}
-			
+
 			function resetClassificaUtenti(){
 				localStorage.utenti="[]";
 			}
 			function stampaClassifica(){
 				var u = JSON.parse(localStorage.utenti);
 				var l = u.length<=10? u.length:10;
-				
+
 				var s = new String("<h3>CLASSIFICA ATTUALE:</h3>");
 				s+="<table border=\"1\">";
 				s+="<th> NICKNAME</th>" + "<th> SCORE </th>";
-				
+
 				for (i=0;i<l;i++){
 					s+="<tr>";
-					
+
 					var stringed=JSON.stringify(u[i]);
 					s+="<td>";
 					var nick=stringed.split(',')[0].split(':')[1];
-					
+
 					console.log( stringed.split(',') )
 					s+=u[i].nick;
 					s+="</td>";
@@ -66,7 +66,7 @@
 				var l = u.length;
 				for(i = 0; i < l-1; i++){
 					for(j = l-1; j > i; j--){
-						if(u[j-1].score < u[j].score){
+						if(Number(u[j-1].score) < Number(u[j].score)){
 							aux = u[j-1];
 							u[j-1] = u[j];
 							u[j] = aux;
@@ -81,7 +81,7 @@
 				}
 				return false;
 			}
-		
+
 			function inserisciUtente() {
 
 				var u = JSON.parse(localStorage.utenti);
@@ -100,7 +100,7 @@
 				alert("Dati inseriti correttamente");
 				return true;
 			}
-			
+
 			function Rigioca() {
 				window.location.href = 'game_Classifica.htm?name='+MyNomeUtente;
 				return true;
