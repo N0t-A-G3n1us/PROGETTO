@@ -1,77 +1,59 @@
-<!--
-
-There are many ways to keep the score in a game, we will show you how to write a score onto the canvas.
-
-1) First make a score component
-
-2) The syntax for writing text on a canvas element is different from drawing a rectangle. Therefore we must call the component constructor using an additional argument, telling the constructor that this component is of type "text".
-In the component constructor we test if the component is of type "text", and use the fillText method instead of the fillRect method
-
-3) At last we add some code in the updateGameArea function that writes the score onto the canvas. We use the frameNo property to count the score
-
--->
-
 <!DOCTYPE html>
 <html>
 	<head>
 		<link rel = "prev" type="text/html" >
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-                
+
         <style >
-			
+
             canvas {
                 display: block;
 				margin: 0 auto;
 				margin-top: 20%;
-				
+
                 border:1px solid #d3d3d3;
                 background-color: grey;
                 border-color: black;
-				
+
 				width: 800px;
-				
+
 						}
-            
+
 			h2 {
 				font-family: serif,"Times New Roman";
 				color:white;
-				}	
-			
-				
-            
+				}
+
+
+
         </style>
-        
-        
+
+
         <title> Car game </title>
         <br>
-        
+
         <h2 id="istruzioni"> Schiva le auto della polizia con: "W","A","S","D" </h2>
 
-        
+
         <script type = "text/javascript" language = "javascript">
 
         var myGamePiece;
         var myObstacles=[]; //array di component ostacoli
         var myScore;
         var id = window.location.search.substr(1).toString().split("=")[1];
-        var myId;
         var myBackground;
 
 
         function startGame() {
-        	//window.alert("NomeUtente: " + nome);
             myGamePiece = new component(60, 30, "carAbove2.png", 10, 120, "image");
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
-            
-            myId=new component("10px", "Id", "red", 250, 100, "text");
-            
-            myScore = new component("30px", "Consolas", "red", 280, 40, "text"); // Consolas è il font
-           
-            myBackground= new component(480,270,"street.jpg",0,0,"image"); 
 
-          //  myRankingArea.start();
+            myScore = new component("30px", "Consolas", "red", 280, 40, "text");
+
+            myBackground= new component(480,270,"street.jpg",0,0,"image");
+
             myGameArea.start();
         }
 
@@ -84,10 +66,9 @@ In the component constructor we test if the component is of type "text", and use
                 document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                 this.frameNo = 0; // <--
                 this.interval = setInterval(updateGameArea, 20);
-                
+
                 //VANNO AGGIUNTI GLI EVENT LISTENER PER KEYBOARD INPUT
                 //Qui versione: Multiple Keys Pressed, per permettere di muoversi in diagonale
-                // IL PROBLEMA STA QUA
                 window.addEventListener('keydown', function (e) {
                     myGameArea.keys = (myGameArea.keys || []);  // se stesso o nuovo array
                     myGameArea.keys[e.keyCode] = true;  //bottone premuto
@@ -103,11 +84,11 @@ In the component constructor we test if the component is of type "text", and use
                 clearInterval(this.interval)
             }
         }
-            
+
         // ritorna true se il corrente frameNo corrisponde a n
         function everyInterval(n) {
             if ((myGameArea.frameNo/ n) % 1 == 0) return true;
-            return false;   
+            return false;
         }
 
 
@@ -119,13 +100,13 @@ In the component constructor we test if the component is of type "text", and use
 			}
             this.width = width;
             this.height = height;
-            
+
             this.speedX = 0;    //sono usati come indicatori di velocita
             this.speedY = 0;
-            
+
             this.x = x;
-            this.y = y; 
-            
+            this.y = y;
+
             this.update = function() {
                 ctx = myGameArea.context;
                 if (type == "image") {
@@ -145,26 +126,26 @@ In the component constructor we test if the component is of type "text", and use
                 }
             }
 
-            
-            
+
+
             this.newPos = function() {  //cambia la posizione del component
-                //lavorando su speedX e speedY 
+                //lavorando su speedX e speedY
                 this.x += this.speedX;
                 this.y += this.speedY;
             }
-            
+
             this.crashWith = function(otherobj) {
                 var myleft = this.x;
                 var myright = this.x + (this.width);
                 var mytop = this.y;
                 var mybottom = this.y + (this.height);
-                
+
                 var otherleft = otherobj.x;
                 var otherright = otherobj.x + (otherobj.width);
-                
+
                 var othertop = otherobj.y;
                 var otherbottom = otherobj.y + (otherobj.height);
-                
+
                 var crash = true;   // presuppongo collisione
                 if ((mybottom < othertop) ||    //verifico se non c è stata
                        (mytop > otherbottom) ||
@@ -176,82 +157,58 @@ In the component constructor we test if the component is of type "text", and use
             }
 
             this.crashWithBorderLeft = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                
+
                 var crash = true;   // presuppongo collisione
                 if (this.x > 0){ //verifico se non c è stata
                    crash = false;
                 }
-                
-                //console.log(h)
+
                 return crash;
 
             }
 
             this.crashWithBorderRight = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                
+
                 var crash = true;   // presuppongo collisione
                 if (this.x + this.width < otherobj.width){ //verifico se non c è stata
                    crash = false;
                 }
-                //console.log(h)
 
                 return crash;
 
             }
 
             this.crashWithBorderTop = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                //var otherbottom = otherobj.y;
-                
+
                 var crash = true;   // presuppongo collisione
                 if (this.y > 0){ //verifico se non c è stata
                    crash = false;
                 }
-                //console.log(h)
 
                 return crash;
 
             }
 
             this.crashWithBorderBottom = function(otherobj){
-            	var myleft = this.x;
-                var myright = this.x + (this.width);
-                var mytop = this.y;
-                var mybottom = this.y + (this.height);
-                //var othertop = otherobj.y;
-                
+
                 var crash = true;   // presuppongo collisione
                 if (this.y + this.height < otherobj.height){ //verifico se non c è stata
                 	crash = false;
 				}
-                //console.log(h)
- 
- 
-                return crash;
 
+                return crash;
             }
-            
+
         }
 
         function updateGameArea() { //va chiamata periodicamente
-            
+
             var x, height, gap, minHeight, maxHeight, minGap, maxGap;
             for (i=0; i< myObstacles.length; i++) {
                 //controllo : crash con ostacolo myObstacle[i] ?
                 if (myGamePiece.crashWith(myObstacles[i])) {
                     //AVVENUTO CRASH CON OSTACOLO
-                    
+
                     window.alert("GAME OVER");
                     window.alert("YOUR SCORE IS: " + myGameArea.frameNo);
                     myGameArea.stop();
@@ -266,41 +223,41 @@ In the component constructor we test if the component is of type "text", and use
             myBackground.update();
 
             myGameArea.frameNo +=1;
-            
+
             if (myGameArea.frameNo == 1 || everyInterval(150)) {
                 x = myGameArea.canvas.width;
                 // Per ostacoli di dimensione random
                 minHeight = 20;
                 maxHeight = 200;
-                
+
                 height = Math.floor(Math.random()*(maxHeight-minHeight+1)+minHeight);
-                
+
                 minGap = 50;
                 maxGap = 200;
                 gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
-                
+
                 //ostacolo sopra
                 myObstacles.push(new component(60, 30, "policeCar.png", x, height,"image"));
                 //ostacolo sotto
                 myObstacles.push(new component(60, 30 , "policeCar.png", x, height+ gap,"image"));
-                
-                
+
+
             }
-            
-            
+
+
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
-            
+
             //movimenti: W,A,S,D
             if (myGameArea.keys && myGameArea.keys[65] && (!myGamePiece.crashWithBorderLeft(myGameArea.canvas)))
                 {myGamePiece.speedX = -1.5; }
-            if (myGameArea.keys && myGameArea.keys[68] && (!myGamePiece.crashWithBorderRight(myGameArea.canvas))) 
+            if (myGameArea.keys && myGameArea.keys[68] && (!myGamePiece.crashWithBorderRight(myGameArea.canvas)))
                 {myGamePiece.speedX = 1.5; }
-            if (myGameArea.keys && myGameArea.keys[87] && (!myGamePiece.crashWithBorderTop(myGameArea.canvas))) 
+            if (myGameArea.keys && myGameArea.keys[87] && (!myGamePiece.crashWithBorderTop(myGameArea.canvas)))
                 {myGamePiece.speedY = -1.5; }
-            if (myGameArea.keys && myGameArea.keys[83] && (!myGamePiece.crashWithBorderBottom(myGameArea.canvas))) 
+            if (myGameArea.keys && myGameArea.keys[83] && (!myGamePiece.crashWithBorderBottom(myGameArea.canvas)))
                 {myGamePiece.speedY = 1.5; }
-            
+
             for (i = 0; i < myObstacles.length; i += 1) {
 				if(myGameArea.frameNo<500)
 					myObstacles[i].x += -1;	//velocita iniziale
@@ -309,27 +266,26 @@ In the component constructor we test if the component is of type "text", and use
 
                 myObstacles[i].newPos();
                 myObstacles[i].update();
-                
+
             }
 
 
             myScore.text = "Score: " + myGameArea.frameNo;
             myScore.update();
-            
+
             myGamePiece.newPos();
             myGamePiece.update();
-            
-               
+
+
         }
-        //per fermare il component (a che serve???)
-        </script>    
+        </script>
     </head>
-    	
+
 
     <body style="background: url('bgGamePage.jpg') no-repeat fixed bottom;
-    background-size: cover;" onload = "startGame();"> 
+    background-size: cover;" onload = "startGame();">
 
 
-     
+
     </body>
 </html>
