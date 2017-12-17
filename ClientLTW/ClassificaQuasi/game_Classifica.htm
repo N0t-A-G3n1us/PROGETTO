@@ -61,7 +61,7 @@ In the component constructor we test if the component is of type "text", and use
 
         function startGame() {
         	//window.alert("NomeUtente: " + nome);
-            myGamePiece = new component(60, 30, "carAbove2.png", 10, 120, "image");
+            myGamePiece = new component(60, 30, "carAbove2Cropped.png", 10, 120, "image");
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
             
@@ -280,9 +280,9 @@ In the component constructor we test if the component is of type "text", and use
                 gap = Math.floor(Math.random()*(maxGap-minGap+1)+minGap);
                 
                 //ostacolo sopra
-                myObstacles.push(new component(60, 30, "policeCar.png", x, height,"image"));
+                myObstacles.push(new component(60, 30, "policeCarCropped.png", x, height,"image"));
                 //ostacolo sotto
-                myObstacles.push(new component(60, 30 , "policeCar.png", x, height+ gap,"image"));
+                myObstacles.push(new component(60, 30 , "policeCarCropped.png", x, height+ gap,"image"));
                 
                 
             }
