@@ -1,68 +1,74 @@
 <!DOCTYPE html>
+
 <html>
+
 	<head>
+
 		<meta charset="ISO-8859-1"/>
 
 		<style>
 
-			input{
+			input {
 				font-size:150%;
 
-				}
-			button{
+			}
+
+			button {
 				font-size:200%;
 				color: blue;
-				}
-			p{
+			}
+
+			p {
 				font-size:150%;
-				}
+			}
 
-
-			</style>
+		</style>
 
 		<script type = "text/javascript" language="javascript">
+
 			var args=window.location.search.substr(1).toString().split("=");
-			var MyNomeUtente = args[1];
+			var MyNomeUtente = args[1].split('&')[0];
 			var MyPunteggio = args[2];
 
 			function inizializzaClassificaUtenti(){
 				if (typeof(localStorage.utenti) == "undefined") {
 					localStorage.utenti="[]";
-			}
+				}
 			}
 
 			function resetClassificaUtenti(){
 				localStorage.utenti="[]";
 			}
+
 			function stampaClassifica(){
 				var u = JSON.parse(localStorage.utenti);
-				var l = u.length<=10? u.length:10;
+				var l = u.length <= 10 ? u.length : 10;
 
 				var s = new String("<h3>CLASSIFICA ATTUALE:</h3>");
-				s+="<table border=\"1\">";
-				s+="<th> NICKNAME</th>" + "<th> SCORE </th>";
+				s += "<table border=\"1\">";
+				s += "<th> NICKNAME</th>" + "<th> SCORE </th>";
 
 				for (i=0;i<l;i++){
-					s+="<tr>";
+					s += "<tr>";
 
-					var stringed=JSON.stringify(u[i]);
-					s+="<td>";
+					var stringed = JSON.stringify(u[i]);
+					s += "<td>";
 					var nick=stringed.split(',')[0].split(':')[1];
 
 					console.log( stringed.split(',') )
-					s+=u[i].nick;
-					s+="</td>";
-					s+="<td>";
-					s+=u[i].score;
-					s+="</td>";
-					s+="</tr>";
+					s += u[i].nick;
+					s += "</td>";
+					s += "<td>";
+					s += u[i].score;
+					s += "</td>";
+					s += "</tr>";
 				}
-				s+="</table>"
-				document.getElementById("vistaStorage").innerHTML=s;
+				s += "</table>"
+				document.getElementById("vistaStorage").innerHTML = s;
 				return true;
 			}
 
-			function ordina(u){	//costo O(n^2) per array piccolo
+			function ordina(u){	//costo O(n^2) per array piccolo ragionevole
 				var l = u.length;
 				for(i = 0; i < l-1; i++){
 					for(j = l-1; j > i; j--){
@@ -86,9 +92,12 @@
 
 				var u = JSON.parse(localStorage.utenti);
 				var nextpos = u.length;
-				var o ={nick: MyNomeUtente , score: MyPunteggio};
+				var o ={
+					nick: MyNomeUtente,
+					score: MyPunteggio
+				};
 
-				for ( el of u) {	//controllo su tutto l array
+				for (el of u) {	//controllo su tutto l array
 					if(uguali(el,o)){
 						alert("coppia nick-score gia presente");
 						return false;
@@ -101,24 +110,25 @@
 				return true;
 			}
 
-			function Rigioca() {
+			function rigioca() {
 				window.location.href = 'game_Classifica.htm?name='+MyNomeUtente;
 				return true;
 			}
 
-			function RigiocaNuovoUtente(){
+			function rigiocaNuovoUtente(){
 				window.location.href = 'PartiQui.htm';
 				return true;
 			}
 
-			</script>
-		</head>
-	<body style="background: url('paper.jpg');" onload="inizializzaClassificaUtenti()">
+		</script>
+	</head>
+
+	<body style="background: url('paper.jpg');" onload="inizializzaClassificaUtenti();">
 
 		<p>
 		BRAVO! PREMI INVIA PER INVIARE IL TUO SCORE!
 		</p>
-		<form action="" method="post" name="registrazione" onSubmit="return inserisciUtente();"
+		<form name="registrazione" onSubmit="return inserisciUtente();"
 		accept-charset="utf-8">
 		<input type="submit" value="Invia">
 		<input type="button" value="Vedi Classifica" onclick="stampaClassifica();">
@@ -127,8 +137,8 @@
 		</form>
 
 		<br>
-		<button value="RIGIOCA" onclick="Rigioca()"> RIGIOCA </button>
-		<button value="RIGIOCA" onclick="RigiocaNuovoUtente()"> RIGIOCA COME NUOVO UTENTE </button>
+		<button value="RIGIOCA" onclick="rigioca()"> RIGIOCA </button>
+		<button value="RIGIOCA" onclick="rigiocaNuovoUtente()"> RIGIOCA COME NUOVO UTENTE </button>
 
 		<hr/>
 			<div id="vistaStorage"></div>
