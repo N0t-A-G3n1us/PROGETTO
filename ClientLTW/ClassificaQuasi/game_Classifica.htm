@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel = "prev" type="text/html" >
 
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
 
         <style >
 
             canvas {
                 display: block;
 				margin: 0 auto;
-				margin-top: 20%;
+				margin-top: 10%;
 
                 border:1px solid #d3d3d3;
                 background-color: grey;
@@ -19,22 +18,24 @@
 				width: 800px;
 
 						}
+			div {
+				font-size: 300%;
+				margin-top: -10%;
+				color: white;
+			}
 
 			h2 {
 				font-family: serif,"Times New Roman";
 				color:white;
-				}
-
-
+			}
 
         </style>
-
 
         <title> Car game </title>
         <br>
 
+		<div id = "nomeUtente"></div>
         <h2 id="istruzioni"> Schiva le auto della polizia con: "W","A","S","D" </h2>
-
 
         <script type = "text/javascript" language = "javascript">
 
@@ -47,6 +48,7 @@
 
         function startGame() {
         	//window.alert("NomeUtente: " + nome);
+			document.getElementById("nomeUtente").innerHTML = id;
             myGamePiece = new component(60, 30, "carAbove2Cropped.png", 10, 120, "image");
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
@@ -54,6 +56,7 @@
             myScore = new component("30px", "Consolas", "red", 280, 40, "text");
 
             myBackground= new component(480,270,"street.jpg",0,0,"image");
+
 
             myGameArea.start();
         }
@@ -241,8 +244,8 @@
                 myObstacles.push(new component(60, 30, "policeCarCropped.png", x, height,"image"));
                 //ostacolo sotto
                 myObstacles.push(new component(60, 30 , "policeCarCropped.png", x, height+ gap,"image"));
-                
-                
+
+
             }
 
 
@@ -285,8 +288,6 @@
 
     <body style="background: url('bgGamePage.jpg') no-repeat fixed bottom;
     background-size: cover;" onload = "startGame();">
-
-
 
     </body>
 </html>
