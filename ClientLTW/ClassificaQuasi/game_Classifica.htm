@@ -11,17 +11,19 @@
 				margin: 0 auto;
 				margin-top: 10%;
 
-                border:1px solid #d3d3d3;
+                border:4px solid DodgerBlue;
                 background-color: grey;
-                border-color: black;
 
 				width: 800px;
 
-						}
-			div {
+			}
+
+			h1 {
+				resize: none;
 				font-size: 300%;
-				margin-top: -10%;
+				margin-top: -35%;
 				color: white;
+				min-width: 960px;
 			}
 
 			h2 {
@@ -32,10 +34,10 @@
         </style>
 
         <title> Car game </title>
-        <br>
 
-		<div id = "nomeUtente"></div>
-        <h2 id="istruzioni"> Schiva le auto della polizia con: "W","A","S","D" </h2>
+
+		<h1 id = "nomeUtente"></h1>
+		<h2 id="istruzioni"> Schiva le auto della polizia con: "W","A","S","D" </h2>
 
         <script type = "text/javascript" language = "javascript">
 
@@ -48,7 +50,7 @@
 
         function startGame() {
         	//window.alert("NomeUtente: " + nome);
-			document.getElementById("nomeUtente").innerHTML = id;
+			document.getElementById("nomeUtente").innerHTML = "Giocatore: " + id;
             myGamePiece = new component(60, 30, "carAbove2Cropped.png", 10, 120, "image");
             myGamePiece.speedX = 0;
             myGamePiece.speedY = 0;
@@ -290,4 +292,5 @@
     background-size: cover;" onload = "startGame();">
 
     </body>
+
 </html>
