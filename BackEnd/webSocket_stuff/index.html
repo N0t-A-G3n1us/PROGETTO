@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="UTF-8">
+	<h>
+		Chat con il server (webSocket) che <br>
+		risponderà firmando il messaggio con [server signed] <br>
+		"hello" per salutare il server :) <br><br>
+	</h>
+	
+</head>
+
+<body>
+
+	<input type="text" placeholder="inserisci qui il testo" id="text">
+
+	<button  onclick="send()"> SEND </button> 
+	<br>
+	
+	<div id="resArea"  > </div>
+
+	
+	
+	<script type="text/javascript">
+		
+		const myPort=5001;
+		var sock= new WebSocket("ws://localhost:"+myPort.toString());
+		
+		var div1=document.getElementById('resArea');
+
+		sock.onmessage = function(event){
+			console.log(event.data);
+			div1.innerHTML+= event.data + "<br>";
+		}
+
+		function send(){
+			var text = document.getElementById('text').value;
+			sock.send(text);
+		}
+
+
+	</script>
+</body>
