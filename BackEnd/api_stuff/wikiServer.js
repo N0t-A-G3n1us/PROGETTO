@@ -7,17 +7,25 @@ var bodyParser=require('body-parser');
 
 app.use(bodyParser.urlencoded({extended:true}));
 
-console.log("dovrei essere un server");
+////
+/*
+lanciare server.js
+inviare messaggio post contenente campo citta: nome citta
+	a localhost:3000/postInfo
+oppure usare metodo get
+*/
+////
+
+console.log("server prova - wikipedia");
 
 var url1 = 'https://en.wikipedia.org/w/api.php?format=json&action=query';
 var url2 = '&prop=extracts&exintro=&explaintext=&titles=';
 var citta;
-var url;
 let content;
 
 var url = url1 + url2 + citta;
 
-app.post("/getInfo", function (req,res) {
+app.post("/postInfo", function (req,res) {
 	
   	// res.send("SEI IN GETINFO");
 	// console.log("ANANNANA")
@@ -26,7 +34,8 @@ app.post("/getInfo", function (req,res) {
   	//res.send(citta);
   	url = url1 + url2 + citta;
   	request.get(url, function callback(error, response, body){
-  		console.log("CIAO");
+  		console.log("in request.get");
+		
 		var info=JSON.parse(body);
 		let page = info.query.pages;
 		let pageId = Object.keys(info.query.pages)[0];
@@ -37,6 +46,25 @@ app.post("/getInfo", function (req,res) {
 	//console.log(content);
 	//res.send(content);
  });
+
+app.get("/getCity/:cit",function(req,res){
+
+	citta=req.params.cit;
+	console.log("received citta from get "+ citta)
+
+	url = url1 + url2 + citta;
+  	request.get(url, function callback(error, response, body){
+  		console.log("in request.get");
+		
+		var info=JSON.parse(body);
+		let page = info.query.pages;
+		let pageId = Object.keys(info.query.pages)[0];
+		//console.log(page[pageId].extract);
+		content = page[pageId].extract;
+		res.send(content);
+	});
+
+});
 
 
 

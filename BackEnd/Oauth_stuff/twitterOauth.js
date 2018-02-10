@@ -1,7 +1,11 @@
 
 
 // codice da : http://codetheory.in/how-to-use-twitter-oauth-with-node-oauth-in-your-node-js-express-application/
+/*
+lanciare twitterOauth.js
+andare a 127.0.0.1/auth/twitter (no localhost)
 
+*/
 ////////////////////////////////////////////////////////////
 
 

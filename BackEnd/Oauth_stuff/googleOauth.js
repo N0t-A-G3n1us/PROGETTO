@@ -51,3 +51,4 @@ app.get('/use_token', function(req, res){
 });
 
 app.listen(3000);
+console.log("started server at http://localhost:3000")

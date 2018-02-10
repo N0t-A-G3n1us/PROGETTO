@@ -1,7 +1,13 @@
+
+
 var server = require('ws').Server;
 const myPort=5001;
 var s = new server({ port: myPort });
 
+/////
+/*	avviare il server da linea di comando, poi connettersi aprendo nel browser il file index.html (anche piu di uno)
+*/
+///
 console.log("[S] server active on port: "+ myPort );
 
 s.on('connection',function(ws){
