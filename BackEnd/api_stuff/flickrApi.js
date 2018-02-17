@@ -77,11 +77,6 @@ Flickr.tokenOnly(flickrOptions, function(error, flickr) {
   })
 
 
-
-
-
-
-
 });
 
 

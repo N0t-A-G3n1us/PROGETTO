@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+	<meta charset="UTF-8">
+	<h>
+		Prova di render  <br><br>
+	</h>
+	
+</head>
+
+<body>
+
+	<input type="text" placeholder="inserisci qui il testo" id="text">
+
+	<button  onclick="send()"> INVIO </button> 
+	<br/>
+	
+		<div id="resArea"> </div>
+		<div id="imgArea"> </div>
+
+	
+	<script type="text/javascript">
+		
+		const myPort=5001;
+		var sock= new WebSocket("ws://localhost:"+myPort.toString());
+		
+		var div1=document.getElementById('resArea');
+		var div2=document.getElementById('imgArea');
+
+		sock.onmessage = function(event){
+			div1.innerHTML="";
+			var strReceived=event.data.toString();
+
+			console.log(strReceived);
+			if(strReceived.substring(0,5)=="[IMG]"){
+				
+				var parsed=strReceived.substring(5,strReceived.length).split("@");
+				for(i=0; i < parsed.length ; i++)
+					div2.innerHTML+= "<img src=" + parsed[i]+">" +"</img>" + "<br/>";
+				
+				//div2.innerHTML+=parsed;
+			}
+			else
+				div1.innerHTML+= strReceived + "<br/>";
+
+		}
+
+
+		function send(){
+			var text = document.getElementById('text').value;
+			sock.send(text);
+		}
+
+
+	</script>
+</body>
