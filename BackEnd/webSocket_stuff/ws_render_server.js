@@ -2,7 +2,7 @@ var express=require('express');
 var app=express();
 
 var server = require('ws').Server;
-var s = new server({ port: 4000 });
+var s = new server({ port: 5001 });
 
 var Flickr =require('flickrapi'),
 flickrOptions = {
@@ -16,7 +16,8 @@ flickrOptions = {
 /*
 istruzioni:
  lanciare ws_render_server.js
-  andare su render.html
+  andare su localhost:3000/showData/:nomeCosaDaCercare
+  wait
   
 */
 ////////////////////////////////////////////////////////////////
@@ -65,7 +66,7 @@ function getData(){
           imgUrl+=".jpg";
           
           console.log(imgUrl);
-          images.push(imgUrl);
+          images.push(imgUrl.toString());
 
          
           
@@ -95,31 +96,58 @@ app.get('/showData/',function(req,res){
 
 })
 
+function noop() {}
+
+function heartbeat() {
+  this.isAlive = true;
+}
+
 app.get('/showData/:citta',function(req,res){
 	citta=req.params.citta;
 
 	getData();
-	console.log("INVIO DATI per" +citta +"EJS")
+	console.log("DATI RICEVUTI ")
+
 	setTimeout(function(){
-		
-		res.redirect("public/render.html");
+	   console.log("INVIO DATI per" +citta +" EJS")	
+		res.sendFile("/home/giuppo/Desktop/PROJ-X_RC/BackEnd/webSocket_stuff/render.html");
 		s.on('connection',function(ws){
 
-			console.log("[S] connection established with one client ")
-
+			console.log("[S] connection established with one client with ip "+req.connection.remoteAddress );
+      
+      ws.isAlive = true;
+      ws.on('pong', heartbeat);
 			
 			
 			console.log("sendind data to f.e.");
-			ws.send("<p style='color:blue'> prova di rendering con citta "+ citta+"</p>");
-			
-				
-			})
+			//ws.send("<p style='color:blue'> prova di rendering con citta "+ citta+"</p>");
+			var strToSend="[IMG]";
+      for(i=0;i<images.length;i++){
+        strToSend+= images[i].toString()+"@"; //character separator for urls
+      } 
+      ws.send(strToSend);
+      
+      ws.on('close',function(ws){
+			   console.log("[S-] client disconnected");
+			});
+        
+      });
 
 	}, 2000);
 
+
   images=[];
+    
 });
 
+const interval = setInterval(function ping() {
+  s.clients.forEach(function each(ws) {
+    if (ws.isAlive === false) return ws.terminate();
+
+    ws.isAlive = false;
+    ws.ping(noop);
+  });
+}, 10000);
 
 
 
