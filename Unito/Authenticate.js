@@ -99,10 +99,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/auth/google', function(req, res){
 	console.log("in login google");
-	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:"+myPort+"&response_type=code&client_id=649610250091-2gjifn38g27d7rc84eg35bbkst478a52.apps.googleusercontent.com");
+	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:"+myPort+"/auth/google/callback&response_type=code&client_id=649610250091-2gjifn38g27d7rc84eg35bbkst478a52.apps.googleusercontent.com");
 });
 
-app.get('/', function(req, res){
+app.get('/auth/google/callback', function(req, res){
 	console.log("code taken");
 	var formData = {
 		code: req.query.code,
