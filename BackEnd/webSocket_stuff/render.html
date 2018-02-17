@@ -15,9 +15,9 @@
 	<button  onclick="send()"> INVIO </button> 
 	<br>
 	
-	<div id="resArea"  > </div>
+		<div id="resArea"> </div>
+		<div id="imgArea"> </div>
 
-	
 	
 	<script type="text/javascript">
 		
@@ -25,10 +25,21 @@
 		var sock= new WebSocket("ws://localhost:"+myPort.toString());
 		
 		var div1=document.getElementById('resArea');
+		var div2=document.getElementById('imgArea');
 
 		sock.onmessage = function(event){
 			console.log(event.data);
-			div1.innerHTML+= event.data + "<br>";
+			if(event.data.substring(0,5)=="[IMG]"){
+				
+				var parsed=event.data.substring(5,event.data.length).split("@");
+				for(i=0; i < parsed.length ; i++)
+					div2.innerHTML+= "<img src=" + parsed[i]+">" +"</img>" + "<br/>";
+				
+				//div2.innerHTML+=parsed;
+			}
+			else
+				div1.innerHTML+= event.data + "<br/>";
+
 		}
 
 		function send(){

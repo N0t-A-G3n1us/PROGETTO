@@ -11,6 +11,13 @@ const myPort=5000;
 
 
 
+/////////////// home for auth
+
+app.get('/homepage', function(req, res){
+    res.sendFile( "/home/giuppo/Desktop/PROJ-X_RC/Unito/fe.html");
+
+});
+
 
 
 
@@ -140,6 +147,11 @@ app.get('/home_logged',function(req,res){
 
 });
 
+
+app.get('*',function(req,res){
+
+	res.redirect("/homepage");
+});
 
 app.listen(myPort);
 console.log("started server at http://localhost:"+myPort)
