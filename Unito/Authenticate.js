@@ -110,7 +110,8 @@ app.get('/', function(req, res){
 		}
 		console.log('Upload successful! Server responded with: ', body);
 		var info = JSON.parse(body);
-		res.send("Got the token: " + info.access_token);
+		//res.send("Got the token: " + info.access_token);
+		res.redirect(formData.redirect_uri+"/home_logged?from=google");
 		a_t = info.access_token;
 	});
 });
