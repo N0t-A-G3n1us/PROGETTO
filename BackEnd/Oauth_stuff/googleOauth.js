@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 app.get('/login', function(req, res){
 	console.log("ciao");
-	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3000&response_type=code&client_id=247107126228-gvlrlvp265blbmcdb92sgglf4iom6gk4.apps.googleusercontent.com");
+	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3000/login&response_type=code&client_id=247107126228-gvlrlvp265blbmcdb92sgglf4iom6gk4.apps.googleusercontent.com");
 });
 
 app.get('/', function(req, res){
@@ -23,7 +23,7 @@ app.get('/', function(req, res){
 		code: req.query.code,
 		client_id: '247107126228-gvlrlvp265blbmcdb92sgglf4iom6gk4.apps.googleusercontent.com',
 		client_secret: 'jvuxMiEEMNDcS4RmNF0cvOeY',
-		redirect_uri: 'http://localhost:3000',
+		redirect_uri: 'http://localhost:3000/login',
 		grant_type: 'authorization_code',
 	}
 	request.post({url: 'https://accounts.google.com/o/oauth2/token', form: formData}, function optionalCallback(err, httpResponse, body){
