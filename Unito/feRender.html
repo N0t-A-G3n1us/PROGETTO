@@ -10,13 +10,25 @@
 
 <body>
 
-	<input type="text" placeholder="inserisci qui il testo" id="text">
+	<input type="text" placeholder="inserisci cosa cercare" id="text">
 
 	<button  onclick="send()"> INVIO </button> 
 	<br/>
-	
-		<div id="resArea"> </div>
-		<div id="imgArea"> </div>
+	<table>
+	<tbody>
+	<tr>
+	<td>	<p id="resArea"></p>	</td>
+	</tr>
+	<tr> 
+	<td>	<h1 id="waitArea"> </h1>	</td>
+	</tr>
+	<tr>
+	<td>	<div id="imgArea"> </div>	</td>
+	</tr>
+	</tbody>
+	</table>
+		
+		
 
 	
 	<script type="text/javascript">
@@ -26,24 +38,32 @@
 		
 		var div1=document.getElementById('resArea');
 		var div2=document.getElementById('imgArea');
+		var div3=document.getElementById('waitArea');
+
 
 		sock.onmessage = function(event){
-			div1.innerHTML="";
+			div2.innerHTML="";
 			var strReceived=event.data.toString();
-
-			console.log(strReceived);
+			console.log("Browser received: "+strReceived);
 			if(strReceived.substring(0,5)=="[IMG]"){
 				
 				var parsed=strReceived.substring(5,strReceived.length).split("@");
 				for(i=0; i < parsed.length ; i++)
 					div2.innerHTML+= "<img src=" + parsed[i]+">" +"</img>" + "<br/>";
 				
+
 				//div2.innerHTML+=parsed;
 			}
-			else
-				div1.innerHTML+= strReceived + "<br/>";
+			else if (strReceived.substring(0,5)=="[STR]"){
+				div1.innerHTML=strReceived.substring(5,strReceived.length)+" ";
+				
+				}
+
+			
 
 		}
+
+		
 
 
 		function send(){

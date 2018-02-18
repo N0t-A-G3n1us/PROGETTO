@@ -17,12 +17,13 @@ s.on('connection',function(ws){
 	ws.on('message',function(message){
 		
 		console.log("[S] Received from browser: " + message);
-		
-		if(message == "hello")
-			ws.send("hi to you from server");
-		else 
-			ws.send(message+" [server sign]");
-		
+		setTimeout(function(){	
+			if(message == "hello")
+				ws.send("hi to you from server");
+			else 
+				ws.send(message+" [server sign]");
+		},3000);
+
 	})
 
 	ws.on('close',function(){
@@ -32,3 +33,21 @@ s.on('connection',function(ws){
 
 
 });
+
+
+var express= require('express');
+var app = express();
+
+app.get('/get',function(req,res){
+
+	res.sendFile("/home/giuppo/Desktop/PROJ-X_RC/BackEnd/webSocket_stuff/index.html");
+});
+
+var server = app.listen(5000,function() {
+  
+  var host = server.address().address
+  var port = server.address().port
+ 
+  console.log("app in ascolto at http://%s:%s",host,port);
+  
+  })
