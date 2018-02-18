@@ -23,14 +23,18 @@ app.get('/iSearch/:element',function(req,res){
 	var options = {
     media: "software"
   	, entity: "software"
-  	,country: "it"
-  	, limit: 5
+  	,country: "us"
+  	, limit: 4
 	}
 
 	itunes.search( q_element, options, function(response) {
 	  // do stuff with 'response' 
-	  console.log(response)
+	  //console.log(response)
 	  res.send(response)
+
+
+	  for(var i=0; i< response.results.length;i++)
+	  	console.log(response.results[i].description+"\n");
 	})
 });
 
