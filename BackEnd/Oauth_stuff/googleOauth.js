@@ -30,8 +30,8 @@ app.get('/', function(req, res){
 		if(err){
 			return console.error('upload failed: ', err);
 		}
-		console.log('Upload successful! Server responded with: ', body);
 		var info = JSON.parse(body);
+		console.log('Upload successful! Server responded with: ', body);
 		res.send("Got the token: " + info.access_token);
 		a_t = info.access_token;
 	});
