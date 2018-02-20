@@ -42,6 +42,7 @@ var jsonDescs;
 
 var elToSearch="";
 
+var a_t = ''; //variabile per verifica access token
 
 /// per RabbitMQ
 
@@ -191,8 +192,25 @@ amqp.connect('amqp://localhost', function(err, conn) {
     } //fine di getData()
 
     app.get('/get',function(req,res){
-      	res.sendFile("/home/giuppo/Desktop/PROJ-X_RC/Unito/feRender.html");
-    });
+      	 var options ={
+        url: 'https://www.googleapis.com/drive/v2/files',
+        headers: {
+          'Authorization' : 'Bearer ' + a_t
+        }
+      };
+      request(options, function callback(error, response, body){
+        if(!error && response.statusCode == 200){
+          var info = JSON.parse(body);
+          console.log(info);
+          res.sendFile("/home/giuppo/Desktop/PROJ-X_RC/Unito/feRender.html");
+        }
+        else{
+          res.redirect('localhost:5000/homepage')
+          }
+        });
+      });
+        
+
 
 
 
@@ -289,7 +307,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
 
     ///////////			Google          //////////
 
-    var a_t = '';
+    
     app.use(bodyParser.urlencoded({extended: false}));
 
     app.get('/auth/google', function(req, res){
@@ -313,7 +331,6 @@ amqp.connect('amqp://localhost', function(err, conn) {
     		console.log('Upload successful! Server responded with: ', body);
     		var info = JSON.parse(body);
     		//res.send("Got the token: " + info.access_token);
-        if (info.access_token.le)
     		res.redirect(formData.redirect_uri+"/get");
     		a_t = info.access_token;
     	});
