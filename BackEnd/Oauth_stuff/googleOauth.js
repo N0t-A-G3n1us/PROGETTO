@@ -2,6 +2,7 @@ var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
 
+
 var app = express();
 var a_t = '';
 app.use(bodyParser.urlencoded({extended: false}));
@@ -20,6 +21,7 @@ app.get('/login', function(req, res){
 		redirect_uri: 'http://localhost:3000/login',
 		grant_type: 'authorization_code',
 	}
+<<<<<<< Updated upstream
 	request.post({url: 'https://www.googleapis.com/oauth2/v4/token', form: formData}, function optionalCallback(err, httpResponse, body){
 		if(err){
 			return console.error('upload failed: ', err);
@@ -31,6 +33,20 @@ app.get('/login', function(req, res){
 		}
 		*/
 		//else{
+=======
+	
+	request.post({url: 'https://accounts.google.com/o/oauth2/token', form: formData}, function optionalCallback(err, httpResponse, body){
+		if(err){
+			return console.error('upload failed: ', err);
+		}
+		var info = JSON.parse(body);
+<<<<<<< Updated upstream
+		console.log('Upload successful! Server responded with: ', body);
+=======
+		
+
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 		res.send("Got the token: " + info.access_token);
 		a_t = info.access_token;
 		//}
