@@ -1,0 +1,13 @@
+
+
+
+
+[SERVER TIME 19:37] [INFO-GOOGLE] in login google
+[SERVER TIME 19:37] [INFO-GOOGLE] code taken
+[SERVER TIME 19:37] [INFO-GOOGLE] Upload successful! Server responded with: {
+ "access_token": "ya29.GltoBdTT5FtWO78sJV7U9GuW69Z5o1Mxr4fBpDleE3kBs3INSvVl4e263WhDxzBuLpk5w-KFDEv8KpYIFr1GiGKsTUChdNvtTJUeYAq3qh5mEo7nyxTunvOtjuhk",
+ "token_type": "Bearer",
+ "expires_in": 3600
+}
+
+[SERVER TIME 19:37] [INFO-WS] [S+] connection established with one client with ip ::ffff:127.0.0.1
