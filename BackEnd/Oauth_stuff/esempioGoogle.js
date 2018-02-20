@@ -4,8 +4,6 @@
  */
 
 var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
   , http = require('http')
   , path = require('path');
 
@@ -19,6 +17,8 @@ var oauth = require('oauth');
 var app = express();
 
 // all environments
+
+/*
 app.configure(function(){
   app.set('port', config.PORT || 80);
   app.set('views', __dirname + '/views');
@@ -30,15 +30,15 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.session({  secret: config.EXPRESS_SESSION_SECRET }));
   app.use(function(req, res, next){
-      res.locals.user = req.session.user;
-      next();
+    res.locals.user = req.session.user;
+     next();
     });
   app.use(app.router);
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(require('stylus').middleware(__dirname + '/public'));
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
-
+*/
 
 app.get('/', function(req, res){
   res.render('index')
@@ -109,7 +109,7 @@ app.get('/sessions/callback', function(req, res){
   });
 });
 
-
+/*
 var _googleAppID = config.GOOGLE_APP_ID;
 var _googleAppSecret = config.GOOGLE_CONSUMER_SECRET;
 console.log("_googleAppID: %s and _googleAppSecret %s", _googleAppID, _googleAppSecret);
@@ -161,6 +161,6 @@ app.get('/sessions/oauth2', function(req, res){
     }
   );
 });
+*/
 
-
-app.listen(parseInt(config.PORT || 80));
+app.listen(5000);

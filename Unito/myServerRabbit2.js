@@ -191,7 +191,8 @@ const nome_ex="log_ex";
 
     } //fine di getData()
 
-    app.get('/get',function(req,res){
+    app.post('/get',function(req,res){
+
       	res.sendFile("/home/giuppo/Desktop/PROJ-X_RC/Unito/feRender.html");
     });
 
@@ -304,39 +305,24 @@ const nome_ex="log_ex";
     		code: req.query.code,
     		client_id: '649610250091-2gjifn38g27d7rc84eg35bbkst478a52.apps.googleusercontent.com',
     		client_secret: 'SXzNSSJbekgoCIEXWQkjtzlR',
-<<<<<<< HEAD
     		redirect_uri: 'http://localhost:'+myPort+"/use_token",
     		grant_type: 'authorization_code',
     	}
     	request.post({url: 'https://www.googleapis.com/oauth2/v4/token', form: formData}, function optionalCallback(err, httpResponse, body){
-=======
-    		redirect_uri: 'http://localhost:'+myPort,
-    		grant_type: 'authorization_code',
-    	}
-    	request.post({url: 'https://accounts.google.com/o/oauth2/token', form: formData}, function optionalCallback(err, httpResponse, body){
->>>>>>> HTMLgame
     		if(err){
     			return console.error('upload failed: ', err);
     		}
     		console.log('Upload successful! Server responded with: ', body);
     		var info = JSON.parse(body);
     		//res.send("Got the token: " + info.access_token);
-<<<<<<< HEAD
     		res.redirect(formData.redirect_uri);
-=======
-    		res.redirect(formData.redirect_uri+"/get");
->>>>>>> HTMLgame
     		a_t = info.access_token;
     	});
     });
 
     app.get('/use_token', function(req, res){
-<<<<<<< HEAD
     	console.log("in use token")
       var options ={
-=======
-    	var options ={
->>>>>>> HTMLgame
     		url: 'https://www.googleapis.com/drive/v2/files',
     		headers: {
     			'Authorization' : 'Bearer ' + a_t
@@ -345,7 +331,6 @@ const nome_ex="log_ex";
     	request(options, function callback(error, response, body){
     		if(!error && response.statusCode == 200){
     			var info = JSON.parse(body);
-<<<<<<< HEAD
 
     			console.log("TOKEN VERIFIED"+ "\n"+info);
     			res.redirect("localhost:5000/get");
@@ -353,13 +338,6 @@ const nome_ex="log_ex";
     		else{
     			console.log(error);
           res.redirect("localhost:5000/homepage")
-=======
-    			console.log(info);
-    			res.send(info);
-    		}
-    		else{
-    			console.log(error);
->>>>>>> HTMLgame
     		}
     	});
     });

@@ -1,23 +1,17 @@
 var express = require('express');
 var request = require('request');
 var bodyParser = require('body-parser');
-var express = require('express');
-var OAuth = require('oauth');
-var request = require('request');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-
 
 var app = express();
 var a_t = '';
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.get('/login', function(req, res){
+app.get('/', function(req, res){
 	console.log("ciao");
-	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/drive.metadata.readonly&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3000/login&response_type=code&client_id=247107126228-gvlrlvp265blbmcdb92sgglf4iom6gk4.apps.googleusercontent.com");
+	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/calendar&access_type=offline&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http://localhost:3000/login&response_type=code&client_id=247107126228-gvlrlvp265blbmcdb92sgglf4iom6gk4.apps.googleusercontent.com");
 });
 
-app.get('/', function(req, res){
+app.get('/login', function(req, res){
 	console.log("code taken");
 	var formData = {
 		code: req.query.code,
@@ -26,14 +20,20 @@ app.get('/', function(req, res){
 		redirect_uri: 'http://localhost:3000/login',
 		grant_type: 'authorization_code',
 	}
-	request.post({url: 'https://accounts.google.com/o/oauth2/token', form: formData}, function optionalCallback(err, httpResponse, body){
+	request.post({url: 'https://www.googleapis.com/oauth2/v4/token', form: formData}, function optionalCallback(err, httpResponse, body){
 		if(err){
 			return console.error('upload failed: ', err);
 		}
-		var info = JSON.parse(body);
 		console.log('Upload successful! Server responded with: ', body);
+		var info = JSON.parse(body);
+		/*if(info.access_token==undefined){
+			res.redirect("http://www.google.it/");
+		}
+		*/
+		//else{
 		res.send("Got the token: " + info.access_token);
 		a_t = info.access_token;
+		//}
 	});
 });
 
@@ -57,4 +57,3 @@ app.get('/use_token', function(req, res){
 });
 
 app.listen(3000);
-console.log("started server at http://localhost:3000")
