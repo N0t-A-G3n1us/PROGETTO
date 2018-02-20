@@ -199,6 +199,7 @@ const nome_ex="log_ex";
 
     } //fine di getData()
 
+<<<<<<< HEAD
     app.get('/get',function(req,res){
          var options ={
         url: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
@@ -226,6 +227,12 @@ const nome_ex="log_ex";
           }
         });
       });
+=======
+    app.post('/get',function(req,res){
+
+      	res.sendFile("/home/giuppo/Desktop/PROJ-X_RC/Unito/feRender.html");
+    });
+>>>>>>> HTMLgame
 
 
 
@@ -342,7 +349,11 @@ const nome_ex="log_ex";
     		code: req.query.code,
     		client_id: '649610250091-2gjifn38g27d7rc84eg35bbkst478a52.apps.googleusercontent.com',
     		client_secret: 'SXzNSSJbekgoCIEXWQkjtzlR',
+<<<<<<< HEAD
     		redirect_uri: 'http://localhost:'+myPort+"/auth/google/callback",
+=======
+    		redirect_uri: 'http://localhost:'+myPort+"/use_token",
+>>>>>>> HTMLgame
     		grant_type: 'authorization_code',
     	}
     	request.post({url: 'https://www.googleapis.com/oauth2/v4/token', form: formData}, function optionalCallback(err, httpResponse, body){
@@ -353,11 +364,45 @@ const nome_ex="log_ex";
     		console.log('Upload successful! Server responded with: ', body);
     		var info = JSON.parse(body);
     		//res.send("Got the token: " + info.access_token);
+<<<<<<< HEAD
     		res.redirect("http://localhost:5000/get");
+=======
+    		res.redirect(formData.redirect_uri);
+>>>>>>> HTMLgame
     		a_t = info.access_token;
     	});
     });
 
+<<<<<<< HEAD
+=======
+    app.get('/use_token', function(req, res){
+    	console.log("in use token")
+      var options ={
+    		url: 'https://www.googleapis.com/drive/v2/files',
+    		headers: {
+    			'Authorization' : 'Bearer ' + a_t
+    		}
+    	};
+    	request(options, function callback(error, response, body){
+    		if(!error && response.statusCode == 200){
+    			var info = JSON.parse(body);
+
+    			console.log("TOKEN VERIFIED"+ "\n"+info);
+    			res.redirect("localhost:5000/get");
+    		}
+    		else{
+    			console.log(error);
+          res.redirect("localhost:5000/homepage")
+    		}
+    	});
+    });
+
+    app.get('/home_logged',function(req,res){
+    	res.send("You logged successfully from: "+ req.query.from);
+
+    });
+
+>>>>>>> HTMLgame
 
     app.get('*',function(req,res){
 

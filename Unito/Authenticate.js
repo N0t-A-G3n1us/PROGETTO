@@ -14,7 +14,7 @@ const myPort=5000;
 /////////////// home for auth
 
 app.get('/homepage', function(req, res){
-    res.sendFile( "/home/giuppo/Desktop/PROJ-X_RC/Unito/fe.html");
+    res.sendFile( "/Users/Dvide/Desktop/progettoreti/Unito/fe.html");
 
 });
 

@@ -16,9 +16,9 @@ var s = new server({ port: 5001 });
 //moduli flickr
 var Flickr =require('flickrapi'),
 flickrOptions = {
-  api_key: "35f004b0cee5c8e425a8d5f5f0dc9c18",
+  api_key: "35f004b0cee5c8e425a8d5f5f0dc9c18"
   //secret necessario solo se si vogliono usare metodi authenticated (OAuth)
-   secret: "a2af028ce7e6faae"
+   //,secret: "a2af028ce7e6faae"
 };
 
 //moduli itunes
@@ -317,7 +317,7 @@ const nome_ex="log_ex";
     	else{
     		next(new Error('No OAuth info stored in the session'));
     	}
-    });
+    });	
 
 
 
@@ -457,7 +457,7 @@ var server = app.listen(myPort,function() {
     if (err != null) return console.error('error in rabbit init: ', err);
     connessione(err,conn);
   });
-  
+
   console.log("app in ascolto at http://%s:%s",host,port);
   
   })

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+		 <!--Import Google Icon Font-->
+	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	  <!--Import materialize.css-->
+	  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"  media="screen,projection"/>
+	  <p class="flow-text">	SEARCH PAGE </p>
+	  <style>
+	  body {
+			  width: 800px;
+			  margin-left: auto;
+			  margin-right: auto;
+			}
+	</style>
+
+
+	</head>	
+
+<body>
+
+	<input type="text" placeholder="inserisci cosa cercare" id="text" class="flow-text">
+
+	<button  onclick="send()" class="waves-effect waves-light btn"> INVIO </button> 
+	<br/>
+	<table>
+	<tbody>
+	<tr>
+	<td>	<p id="resArea"></p>	</td>
+	</tr>
+	<tr> 
+	<td>	<div id="wikiArea"> </div>	</td>
+	</tr>
+	<tr>
+	<td>	<div id="imgArea"> </div>	</td>
+	</tr>
+	</tbody>
+	</table>
+		
+	<div id="itunesPart">
+		<table border="1">
+		<tbody>
+		<tr id="riga1">
+			
+		</tr>
+		<tr id="riga2">
+			
+		</tr>
+		<tr id="riga3">
+			
+		</tr>
+		</tbody>
+		</table>
+
+
+	</div>
+		
+
+	
+	<script type="text/javascript">
+		
+		const myPort=5001;
+		var sock= new WebSocket("ws://localhost:"+myPort.toString());
+		
+		var div1=document.getElementById('resArea');
+		var div2=document.getElementById('imgArea');
+		var div3=document.getElementById('wikiArea');
+
+		var rdiv1=document.getElementById('riga1')
+		var rdiv2=document.getElementById('riga2')
+		var rdiv3=document.getElementById('riga3')
+
+
+		sock.onmessage = function(event){
+			
+			var strReceived=event.data.toString();
+			console.log("Browser received: "+strReceived);
+			if(strReceived.substring(0,5)=="[IMG]"){
+				div2.innerHTML="";	
+				var parsed=JSON.parse( strReceived.substring(5,strReceived.length) );
+				for(i=0; i < parsed.length ; i++)
+					div2.innerHTML+= "<img src=" + parsed[i]+">" +"</img>" + "<br/>";
+				
+
+				//div2.innerHTML+=parsed;
+			}
+			else if (strReceived.substring(0,5)=="[STR]"){
+				div1.innerHTML="";
+				div1.innerHTML=strReceived.substring(5,strReceived.length)+" ";
+				
+				}
+			else if (strReceived.substring(0,5)=="[WIK]"){
+				div3.innerHTML="";
+				var toWrite=strReceived.substring(5,strReceived.length)
+				if(toWrite=="" || toWrite==undefined)	// prova con folletto non funziona
+					toWrite="Nessun risultato in wikipedia";
+				div3.innerHTML+=toWrite +"</br>";
+			}
+
+			else if (strReceived.substring(0,5)=="[APN]"){
+				rdiv1.innerHTML="";
+				var arn=JSON.parse(strReceived.substring(5,strReceived.length));
+				for(i=0; i < arn.length ; i++)
+					rdiv1.innerHTML += "<td>"+ arn[i]+ "</td>";
+			}
+			
+			else if (strReceived.substring(0,5)=="[API]"){
+				rdiv2.innerHTML="";
+				var ari=JSON.parse(strReceived.substring(5,strReceived.length));
+				for(i=0; i < ari.length ; i++)
+					rdiv2.innerHTML += "<td> <img src=" + ari[i]+">" +"</img> </td>";
+			}
+			
+			else if (strReceived.substring(0,5)=="[APD]"){
+				rdiv3.innerHTML="";
+				var ard=JSON.parse(strReceived.substring(5,strReceived.length));
+				for(i=0; i < ard.length ; i++)
+					rdiv3.innerHTML += "<td>"+ ard[i] + "</td>";
+			}
+
+			if (strReceived.substring(0,3)=="[AP" && (strReceived.substring(5,strReceived.length)=="" || strReceived.substring(5,strReceived.length)==undefined) ){
+				rdiv1.innerHTML="<td>Nessun risultato</td>"
+				
+			}
+			
+
+		}
+
+	
+		function send(){
+			var text = document.getElementById('text').value;
+			sock.send(text);
+		}
+
+
+
+	</script>
+</body>

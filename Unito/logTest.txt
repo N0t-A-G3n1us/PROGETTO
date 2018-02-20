@@ -11,3 +11,32 @@
 }
 
 [SERVER TIME 19:37] [INFO-WS] [S+] connection established with one client with ip ::ffff:127.0.0.1
+
+
+
+
+[SERVER TIME 21:51] [INFO-WS] received: carsd
+[SERVER TIME 21:51] [INFO-WIKI] searching info on  carsd through wiki api
+[SERVER TIME 21:51] [INFO-ITUNES] searching info on  carsd through itunes search api
+[SERVER TIME 21:51] [INFO-WIKI] searching desc. for carsd through wiki api
+[SERVER TIME 21:51] [INFO-FLICKR] searching photos for carsd through flickr api
+[SERVER TIME 21:51] [INFO-FLICKR] https://farm5.staticflickr.com/4515/38103290776_1fa9c86329.jpg
+[SERVER TIME 21:51] [INFO-FLICKR] {"id":"36282827012","owner":"16032424@N02","secret":"63911a33ee","server":"4335","farm":5,"title":"Fiat X1 9. A","ispublic":1,"isfriend":0,"isfamily":0}
+[SERVER TIME 21:51] [INFO-FLICKR] {"id":"38103290776","owner":"45676495@N05","secret":"1fa9c86329","server":"4515","farm":5,"title":"357 Borgward Hansa 2400 Limousine (1957)","ispublic":1,"isfriend":0,"isfamily":0}
+[SERVER TIME 21:51] [INFO-FLICKR] https://farm5.staticflickr.com/4335/36282827012_63911a33ee.jpg
+[SERVER TIME 21:51] [INFO-FLICKR] {"id":"34462914894","owner":"124471136@N03","secret":"4d09e47ce5","server":"4201","farm":5,"title":"BestPoirot_Suchet","ispublic":1,"isfriend":0,"isfamily":0}
+[SERVER TIME 21:51] [INFO-FLICKR] https://farm5.staticflickr.com/4201/34462914894_4d09e47ce5.jpg
+[SERVER TIME 21:51] [INFO-FLICKR] {"id":"35797655430","owner":"153140791@N02","secret":"241abb3fea","server":"4299","farm":5,"title":"leaf atc carsd","ispublic":1,"isfriend":0,"isfamily":0}
+[SERVER TIME 21:51] [INFO-FLICKR] https://farm5.staticflickr.com/4299/35797655430_241abb3fea.jpg
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto nome da itunes:Real Racing 3
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto img da itunes:http://is4.mzstatic.com/image/thumb/Purple128/v4/2b/58/7c/2b587c7c-2193-1a71-09e5-114f708e45b4/source/100x100bb.jpg
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuta desc da itunes
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto nome da itunes:KAYAK Flights, Hotels & Cars
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto img da itunes:http://is2.mzstatic.com/image/thumb/Purple128/v4/88/fb/ad/88fbad7e-a261-e31a-9eb5-ce233b5dbd10/source/100x100bb.jpg
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuta desc da itunes
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto nome da itunes:Expedia: Hotels, Flights & Car
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto img da itunes:http://is3.mzstatic.com/image/thumb/Purple118/v4/74/f9/ee/74f9ee39-612d-6527-2f6a-ca1f037b8286/source/100x100bb.jpg
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuta desc da itunes
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto nome da itunes:CSR Racing 2
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuto img da itunes:http://is1.mzstatic.com/image/thumb/Purple128/v4/54/2b/51/542b518b-c2d1-2d3d-1a11-0811add19b51/source/100x100bb.jpg
+[SERVER TIME 21:51] [INFO-ITUNES] Ottenuta desc da itunes
