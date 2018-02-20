@@ -29,7 +29,7 @@
 	</table>
 		
 	<div id="itunesPart">
-		<table>
+		<table border="1">
 		<tbody>
 		<tr id="riga1">
 			
@@ -68,7 +68,7 @@
 			console.log("Browser received: "+strReceived);
 			if(strReceived.substring(0,5)=="[IMG]"){
 				div2.innerHTML="";	
-				var parsed=strReceived.substring(5,strReceived.length).split("@");
+				var parsed=JSON.parse( strReceived.substring(5,strReceived.length) );
 				for(i=0; i < parsed.length ; i++)
 					div2.innerHTML+= "<img src=" + parsed[i]+">" +"</img>" + "<br/>";
 				
@@ -109,6 +109,10 @@
 					rdiv3.innerHTML += "<td>"+ ard[i] + "</td>";
 			}
 
+			if (strReceived.substring(0,3)=="[AP" && (strReceived.substring(5,strReceived.length)=="" || strReceived.substring(5,strReceived.length)==undefined) ){
+				rdiv1.innerHTML="<td>Nessun risultato</td>"
+				
+			}
 			
 
 		}
