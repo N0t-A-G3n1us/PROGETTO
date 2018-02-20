@@ -8,6 +8,8 @@ var app=express();
 //moduli websocket
 var server = require('ws').Server;  
 var s = new server({ port: 5001 });
+var amqp = require('amqplib/callback_api');
+
 
 //moduli flickr
 var Flickr =require('flickrapi'),
