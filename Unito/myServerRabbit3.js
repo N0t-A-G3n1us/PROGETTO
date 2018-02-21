@@ -42,6 +42,7 @@ var jsonDescs;
 
 var elToSearch="";
 
+var service_from="";
 
 /// per RabbitMQ
 
@@ -80,12 +81,12 @@ const nome_ex="log_ex";
 
         },function(err, result) {
             if(err) { throw new Error(err); }
-            ch.publish(nome_ex, "INFO-FLICKR", new Buffer("searching photos for "+ elToSearch+ " through flickr api" ));
+            ch.publish(nome_ex, "INFO.FLICKR", new Buffer("searching photos for "+ elToSearch+ " through flickr api" ));
             console.log("searching photos for "+ elToSearch+ " through flickr api");
           
             for( i=0; i< result.photos.photo.length;i++){
               var fotoJSON=result.photos.photo[i]
-              ch.publish(nome_ex, "INFO-FLICKR",new Buffer(JSON.stringify(fotoJSON)));
+              ch.publish(nome_ex, "INFO.FLICKR",new Buffer(JSON.stringify(fotoJSON)));
               console.log(fotoJSON);
               
               //costruzione url 
@@ -99,7 +100,7 @@ const nome_ex="log_ex";
               imgUrl+=".jpg";
               //url costruita
               
-              ch.publish(nome_ex, "INFO-FLICKR", new Buffer(imgUrl.toString()));
+              ch.publish(nome_ex, "INFO.FLICKR", new Buffer(imgUrl.toString()));
               console.log(imgUrl);
 
               images.push(imgUrl.toString());
@@ -137,12 +138,12 @@ const nome_ex="log_ex";
 
       var url = url1 + url2 + elToSearch;
 
-      ch.publish(nome_ex, "INFO-WIKI", new Buffer("searching info on  "+ elToSearch + " through wiki api"));
+      ch.publish(nome_ex, "INFO.WIKI", new Buffer("searching info on  "+ elToSearch + " through wiki api"));
       console.log("searching info on  "+ elToSearch + " through wiki api")
 
       request.get(url, function callback(error, response, body){ 
         
-        ch.publish(nome_ex, "INFO-WIKI", new Buffer("searching desc. for "+ elToSearch+ " through wiki api" ));
+        ch.publish(nome_ex, "INFO.WIKI", new Buffer("searching desc. for "+ elToSearch+ " through wiki api" ));
         console.log("in request.get");
         
         var info=JSON.parse(body);
@@ -159,7 +160,7 @@ const nome_ex="log_ex";
 
     //////////////////////////// ITUNES SEARCH
 
-      ch.publish(nome_ex, "INFO-ITUNES", new Buffer("searching info on  "+ elToSearch + " through itunes search api"));
+      ch.publish(nome_ex, "INFO.ITUNES", new Buffer("searching info on  "+ elToSearch + " through itunes search api"));
       console.log("searching info on  "+ elToSearch + " through itunes search api");
 
       var q_element=elToSearch;
@@ -181,13 +182,13 @@ const nome_ex="log_ex";
         for(var i=0; i< response.results.length;i++){
           var elApp=response.results[i]
           appNames[i] = elApp.trackCensoredName ;
-          ch.publish(nome_ex, "INFO-ITUNES", new Buffer("Ottenuto nome da itunes:"+appNames[i]));
+          ch.publish(nome_ex, "INFO.ITUNES", new Buffer("Ottenuto nome da itunes:"+appNames[i]));
           console.log("Ottenuto nome da itunes:"+appNames[i]);
           appImgs[i] = elApp.artworkUrl100;
-          ch.publish(nome_ex, "INFO-ITUNES", new Buffer("Ottenuto img da itunes:"+appImgs[i]));
+          ch.publish(nome_ex, "INFO.ITUNES", new Buffer("Ottenuto img da itunes:"+appImgs[i]));
           console.log("Ottenuta img da itunes:"+appImgs[i]);
           appDescs[i] = elApp.description;
-          ch.publish(nome_ex, "INFO-ITUNES", new Buffer("Ottenuta desc da itunes")); //eventualmente
+          ch.publish(nome_ex, "INFO.ITUNES", new Buffer("Ottenuta desc da itunes")); //eventualmente
           console.log("Ottenuta desc da itunes:");
       
         }
@@ -199,32 +200,45 @@ const nome_ex="log_ex";
 
     } //fine di getData()
 
+
+    ///////////////////// GET PRINCIPALE DI GESTIONE ACCESS token ////////////////////////////
+
     app.get('/get',function(req,res){
-         var options ={
-        url: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
-        headers: {
-          'Authorization' : 'Bearer ' + a_t
-        }
-      };
-      request(options, function callback(error, response, body){
-        if(!error && response.statusCode == 200){
-          //ch.publish(nome_ex, "INFO-GOOGLE", new Buffer("[TOKEN CORRECT]"));
-          console.log("[TOKEN CORRECT]")
-          var info = JSON.parse(body);
-          //ch.publish(nome_ex, "INFO-GOOGLE", new Buffer(JSON.stringify(info.items[0].summary)));
-          console.log(info);
-          res.sendFile("/home/giuppo/Desktop/PROJ-X_RC/Unito/feRender.html");
-        }
-        else{
-          ch.publish(nome_ex, "ERRORE", new Buffer("[redirect due to token not correct]"));
-          console.log("[redirect due to token not correct]")
-          ch.publish(nome_ex, "ERRORE", new Buffer("error num "+response.statusCode));
-          console.log("error num "+response.statusCode)
-          ch.publish(nome_ex, "ERRORE", new Buffer("ERRORE "+ error));
-          console.log("ERRORE "+ error)
-          res.redirect('http://localhost:5000/homepage')
-          }
-        });
+       if(service_from=="GO"){
+	         var options ={
+			url: 'https://www.googleapis.com/calendar/v3/users/me/calendarList',
+	        headers: {
+	          'Authorization' : 'Bearer ' + a_t
+	        }
+	      };
+	      request(options, function callback(error, response, body){
+	        if(!error && response.statusCode == 200){
+	          //ch.publish(nome_ex, "INFO.GOOGLE", new Buffer("[TOKEN CORRECT]"));
+	          console.log("[TOKEN CORRECT]")
+	          var info = JSON.parse(body);
+	          //ch.publish(nome_ex, "INFO.GOOGLE", new Buffer(JSON.stringify(info.items[0].summary)));
+	          console.log(info);
+	          res.sendFile(__dirname + "/feRender.html");
+	        }
+	        else{
+	          ch.publish(nome_ex, "ERRORE", new Buffer("[redirect due to token not correct]"));
+	          console.log("[redirect due to token not correct]")
+	          ch.publish(nome_ex, "ERRORE", new Buffer("error num "+response.statusCode));
+	          console.log("error num "+response.statusCode)
+	          ch.publish(nome_ex, "ERRORE", new Buffer("ERRORE "+ error));
+	          console.log("ERRORE "+ error)
+	          res.redirect('http://localhost:'+myPort+'/homepage')
+	          }
+	        });
+      	}
+      	else if(service_from=="TW" && twit_verified==true){
+      		twit_verified=false;
+      		res.sendFile(__dirname + "/feRender.html");
+      	}
+      	else{
+      		ch.publish(nome_ex, "ERRORE", new Buffer("/get: source sconosciuta"));
+      		res.redirect('http://localhost:'+myPort+'/homepage');
+      	}
       });
 
 
@@ -241,7 +255,7 @@ const nome_ex="log_ex";
     /////////////// home for auth
 
     app.get('/homepage', function(req, res){
-        res.sendFile( "/home/giuppo/Desktop/PROJ-X_RC/Unito/fe.html");
+        res.sendFile( __dirname + "/fe.html");
 
     });
 
@@ -250,12 +264,12 @@ const nome_ex="log_ex";
 
     ////////////////	Twitter
 
-
+    var twit_verified=false;
     var oauth = new OAuth.OAuth(
     		 "https://api.twitter.com/oauth/request_token",
     		 "https://api.twitter.com/oauth/access_token",
-    		 "IPbVAysd5FgG8f05raz1xi9YP",
-    		 "IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi",
+    		 "IPbVAysd5FgG8f05raz1xi9YP",	//consumer key
+    		 "IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi",	//Consumer Secret (API Secret)
     		 "1.0",
     		 "http://127.0.0.1:"+myPort+"/auth/twitter/callback",
     		 "HMAC-SHA1"
@@ -263,12 +277,12 @@ const nome_ex="log_ex";
 
 
 
-    app.use(session({ secret: 'IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi',
+    app.use(session({ secret: 'IzYVFgxnt8UZAGipRz2zLP8MPiWLovEafsGEsN8CdhgDaA1WMi',	//dal moduloexpress-session
     				 cookie: { maxAge: 60000 }}))
 
 
     app.get('/auth/twitter', function(req, res){
-      ch.publish(nome_ex, "INFO-TWITTER", new Buffer("in auth twitter"));
+      ch.publish(nome_ex, "INFO.TWITTER", new Buffer("in auth twitter"));
     	console.log("in auth twitter");
     	oauth.getOAuthRequestToken(function(error, oauth_token, oauth_token_secret, results){
     		if(error){
@@ -276,11 +290,11 @@ const nome_ex="log_ex";
     			res.send("Error getting oauth request token");
     		}
     		else{
-          ch.publish(nome_ex, "INFO-TWITTER", new Buffer("ready to redirect on https://twitter.com/oauth/authenticate?oauth_token=XXX"));
+          ch.publish(nome_ex, "INFO.TWITTER", new Buffer("ready to redirect on https://twitter.com/oauth/authenticate?oauth_token=XXX"));
     			console.log("ready to redirect on https://twitter.com/oauth/authenticate?oauth_token=XXX");			
     			req.session.oauth = {
-    	        token: oauth_token,
-    	        token_secret: oauth_token_secret
+	    	        token: oauth_token,
+	    	        token_secret: oauth_token_secret
     	        
     	     	 };
           		console.log(req.session.oauth);
@@ -291,7 +305,7 @@ const nome_ex="log_ex";
     });
 
     app.get('/auth/twitter/callback', function(req, res, next){
-    	ch.publish(nome_ex, "INFO-TWITTER", new Buffer("verifying Authentication"));
+    	ch.publish(nome_ex, "INFO.TWITTER", new Buffer("verifying Authentication"));
     	console.log("\n"+ "verifying Authentication")
 
 
@@ -303,19 +317,25 @@ const nome_ex="log_ex";
     			oauth_data.verifier,
     			function(error, oauth_access_token, oauth_access_token_secret, results){
     			
-    				if(error) new Error(error);
+    				if(error) {
+    					new Error(error);
+    					res.redirect("http://localhost:"+myPort+"/homepage");
+    				}
     				else{
     					req.session.oauth.access_token = oauth_access_token;
     					req.session.oauth.access_token_secret = oauth_access_token_secret;
-
+    					twit_verified=true;
+    					service_from="TW"
     					console.log(results, req.session.oauth);
     					//res.send("Authentication succesful!")
     					res.redirect("http://localhost:"+myPort+"/get");
+    					
     				}
     		});
     	}
     	else{
-    		next(new Error('No OAuth info stored in the session'));
+    		console.error('No OAuth info stored in the session',req.session);
+    		res.redirect("http://localhost:"+myPort+"/homepage");
     	}
     });	
 
@@ -330,13 +350,13 @@ const nome_ex="log_ex";
       //extended: false => accetta solo stringhe o array
 
     app.get('/auth/google', function(req, res){
-      ch.publish(nome_ex, "INFO-GOOGLE", new Buffer("in login google"));
+      ch.publish(nome_ex, "INFO.GOOGLE", new Buffer("in login google"));
     	console.log("in login google");
     	res.redirect("https://accounts.google.com/o/oauth2/v2/auth?scope=https://www.googleapis.com/auth/calendar&response_type=code&include_granted_scopes=true&state=state_parameter_passthrough_value&redirect_uri=http%3A%2F%2Flocalhost:"+myPort+"/auth/google/callback&client_id=649610250091-2gjifn38g27d7rc84eg35bbkst478a52.apps.googleusercontent.com");
     });
 
     app.get('/auth/google/callback', function(req, res){
-      ch.publish(nome_ex, "INFO-GOOGLE", new Buffer("code taken"));
+      ch.publish(nome_ex, "INFO.GOOGLE", new Buffer("code taken"));
     	console.log("code taken");
     	var formData = {
     		code: req.query.code,
@@ -349,12 +369,14 @@ const nome_ex="log_ex";
     		if(err){
     			return console.error('upload failed: ', err);
     		}
-        ch.publish(nome_ex, "INFO-GOOGLE", new Buffer('Upload successful! Server responded with: ' + body));
-    		console.log('Upload successful! Server responded with: ', body);
-    		var info = JSON.parse(body);
-    		//res.send("Got the token: " + info.access_token);
-    		res.redirect("http://localhost:5000/get");
-    		a_t = info.access_token;
+       	ch.publish(nome_ex, "INFO.GOOGLE", new Buffer('Upload successful! Server responded with: ' + body));
+		console.log('Upload successful! Server responded with: ', body);
+		var info = JSON.parse(body);
+		//res.send("Got the token: " + info.access_token);
+		service_from="GO"
+		res.redirect("http://localhost:5000/get");
+		a_t = info.access_token;
+
     	});
     });
 
@@ -371,13 +393,13 @@ const nome_ex="log_ex";
     ///////////////////////////////////// WEB SOCKET PART
 
     s.on('connection',function(ws,req){
-        ch.publish(nome_ex, "INFO-WS", new Buffer("[S+] connection established with one client with ip "+ req.connection.remoteAddress ));
+        ch.publish(nome_ex, "INFO.WS", new Buffer("[S+] connection established with one client with ip "+ req.connection.remoteAddress ));
     		console.log("[S+] connection established with one client with ip "+ req.connection.remoteAddress );
       
 
         
         ws.on('message', function incoming(message) {
-          ch.publish(nome_ex, "INFO-WS", new Buffer("received: "+ message));
+          ch.publish(nome_ex, "INFO.WS", new Buffer("received: "+ message));
           console.log('\n[S] received: %s\n', message);
           elToSearch=message;
           images=[];
@@ -394,7 +416,6 @@ const nome_ex="log_ex";
           
 
           
-         //  eventEmitter.on('data_received',function(){  
           setTimeout(function(){
             
             
@@ -423,7 +444,7 @@ const nome_ex="log_ex";
             //invio risultato ricerca su itunes per app (con json)
 
 
-            },1000);
+            },1500);
 
 
           
@@ -435,7 +456,7 @@ const nome_ex="log_ex";
 
 
         ws.on('close',function(err){
-           ch.publish(nome_ex, "INFO-WS", new Buffer(" client disconnected"+err));
+           ch.publish(nome_ex, "INFO.WS", new Buffer(" client disconnected"+err));
     		   console.log("[S-] client disconnected"+err);
     		});
             

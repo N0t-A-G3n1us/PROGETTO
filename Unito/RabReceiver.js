@@ -41,12 +41,12 @@ amqp.connect('amqp://localhost', function(err, conn) {
       });
 
       ch.consume(q.queue, function(msg) {
-        fs.appendFile(__dirname+'/logTest.txt',
+        fs.appendFile(__dirname + '/logTest.txt',
           timestamp('[SERVER TIME hh:mm]') + " ["+msg.fields.routingKey+"] " + msg.content.toString()+'\n', function(err) {
             if(err) {
               return console.log(err);
             }
-            console.log("[F] writing on file");
+            console.log("[File] writing on file");
 
         });
 

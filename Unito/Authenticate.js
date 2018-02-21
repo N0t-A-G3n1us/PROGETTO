@@ -79,7 +79,6 @@ app.get('/auth/twitter/callback', function(req, res, next){
 					req.session.oauth.access_token_secret = oauth_access_token_secret;
 					console.log(results, req.session.oauth);
 					//res.send("Authentication succesful!")
-					res.redirect("http://localhost:"+myPort+"/home_logged?from=twitter");
 				}
 		});
 	}

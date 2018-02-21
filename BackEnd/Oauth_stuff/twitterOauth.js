@@ -93,6 +93,7 @@ app.get('/auth/twitter/callback', function(req, res, next){
 			
 				if(error) new Error(error);
 				else{
+					console.log("TWITTER: AUTENTICATO")
 					req.session.oauth.access_token = oauth_access_token;
 					req.session.oauth.access_token_secret = oauth_access_token_secret;
 					console.log(results, req.session.oauth);
